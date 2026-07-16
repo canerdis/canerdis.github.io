@@ -1,0 +1,76 @@
+@import './fonts.css';
+@import './tokens.css';
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-serif);
+  font-size: var(--step-0);
+  line-height: 1.6;
+  /* Newsreader has real optical sizes: the display and text cuts are
+     different drawings, not one font scaled. Let the browser use them. */
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  line-height: 1.15;
+  text-wrap: balance;
+}
+
+h1 { font-size: var(--step-4); }
+h2 { font-size: var(--step-2); }
+h3 { font-size: var(--step-1); }
+
+p { max-width: var(--measure); }
+
+/* Links are underlined, never tinted. There is no accent color. */
+a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+  text-decoration-thickness: 1px;
+}
+a:hover { text-decoration-thickness: 2px; }
+
+/* Focus rings use --fg; no separate focus color exists. */
+:focus-visible {
+  outline: 2px solid var(--fg);
+  outline-offset: 2px;
+}
+
+/* Small labels, dates, axis text — the machine-ish voice. */
+.label {
+  font-family: var(--font-sans);
+  font-size: var(--step--1);
+  color: var(--muted);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  /* Tabular figures: every date and table depends on these. */
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+hr, .rule {
+  border: 0;
+  border-top: var(--rule-width) solid var(--rule);
+  margin: 0;
+}
+
+img { max-width: 100%; height: auto; }
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+}
+.skip-link:focus {
+  left: 1rem;
+  top: 1rem;
+  background: var(--bg);
+  padding: 0.5rem 1rem;
+  z-index: 10;
+}
