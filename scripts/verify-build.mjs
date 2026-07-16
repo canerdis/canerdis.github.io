@@ -56,7 +56,7 @@ if (js.length) failures.push(`zero-JS violated: ${js.length} .js file(s) in dist
 //    author's machine and 404s in production. The Set lookup below is
 //    case-sensitive, so it catches that locally.
 const present = new Set(files.map((f) => f.split('\\').join('/')));
-const exists = (p) => present.has(p) || present.has(`${p}/index.html`) || present.has(`${p}index.html`);
+const exists = (p) => present.has(p) || present.has(`${p}/index.html`);
 
 for (const f of files.filter((f) => extname(f) === '.html')) {
   const html = await readFile(f, 'utf8');
