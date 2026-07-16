@@ -1,4 +1,4 @@
-import { findColorLiterals, isPurple } from './colors.mjs';
+import { findColorLiterals, findFunctionalColors, findNamedPurples, isPurple } from './colors.mjs';
 
 // The four tokens from src/styles/tokens.css, normalized.
 export const ALLOWED_HEXES = ['#0f0e0c', '#e8e4dc', '#8a857c', '#2a2724'];
@@ -28,9 +28,18 @@ export function findBannedPatterns(css) {
 
 export function findDisallowedColors(css) {
   const out = [];
-  for (const hex of findColorLiterals(css)) {
+  // Hex literals (including alpha-hex, normalized to RGB) and functional
+  // rgb()/hsl() notations (also normalized to RGB) are unambiguously colors,
+  // so both are checked against the allowlist/purple test the same way.
+  const hexes = [...findColorLiterals(css), ...findFunctionalColors(css)];
+  for (const hex of hexes) {
     if (ALLOWED_HEXES.includes(hex)) continue;
     out.push({ hex, reason: isPurple(hex) ? 'purple' : 'off-token' });
+  }
+  // Named purples are a denylist match, not a hex conversion: they're never
+  // one of the four tokens, so they're always reported as purple.
+  for (const name of findNamedPurples(css)) {
+    out.push({ hex: name, reason: 'purple' });
   }
   return out;
 }
