@@ -1,0 +1,41 @@
+# House chart style. Every export runs through this.
+# Matches the site: transparent background, site fonts, site foreground.
+
+figure.facecolor: none
+axes.facecolor: none
+savefig.facecolor: none
+savefig.transparent: True
+
+# Never a white chart background: the site is #0F0E0C.
+
+font.family: sans-serif
+font.sans-serif: Inter, DejaVu Sans
+axes.titlesize: 14
+axes.labelsize: 11
+xtick.labelsize: 10
+ytick.labelsize: 10
+
+text.color: E8E4DC
+axes.labelcolor: E8E4DC
+axes.titlecolor: E8E4DC
+xtick.color: 8A857C
+ytick.color: 8A857C
+
+# Minimal chart junk: no bounding box, no heavy grid.
+axes.spines.top: False
+axes.spines.right: False
+axes.spines.left: False
+axes.edgecolor: 2A2724
+axes.grid: True
+axes.grid.axis: y
+grid.color: 2A2724
+grid.linewidth: 0.8
+grid.alpha: 1.0
+
+legend.frameon: False
+
+axes.prop_cycle: cycler('color', ['3987e5', '199e70', 'c98500', 'e66767', '008300', 'd95926'])
+
+figure.dpi: 144
+savefig.dpi: 144
+savefig.bbox: tight
