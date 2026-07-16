@@ -1,0 +1,30 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import VizCard from '../../components/VizCard.astro';
+
+const items = (await getCollection('viz')).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+---
+<Layout title="Visualizations">
+  <h1>Visualizations</h1>
+  <div class="grid">
+    {items.map((e) => (
+      <VizCard
+        href={e.data.writeup ? `/visualizations/${e.id}` : e.data.chart.src}
+        title={e.data.title}
+        summary={e.data.summary}
+        chart={e.data.chart}
+        alt={e.data.alt}
+        hasWriteup={e.data.writeup}
+      />
+    ))}
+  </div>
+</Layout>
+
+<style>
+  h1 { margin: 0 0 3rem; }
+  .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 4rem 3rem; }
+  @media (max-width: 48rem) { .grid { grid-template-columns: 1fr; gap: 3rem; } }
+</style>
