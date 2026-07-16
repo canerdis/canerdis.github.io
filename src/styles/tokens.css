@@ -1,0 +1,26 @@
+/* The ONLY colors permitted in the interface.
+   Thesis: color is reserved for data. All color on this site comes from
+   inside chart images. Nothing here is decorative.
+   Verified contrast on --bg: --fg 15.22:1, --muted 5.26:1 (both pass WCAG AA).
+   --rule is 1.30:1 by design: it is a decorative hairline, not text or a
+   UI control, so the 4.5:1 text threshold does not apply to it. */
+:root {
+  --bg:    #0F0E0C; /* warm near-black; pure #000 is a tell */
+  --fg:    #E8E4DC; /* warm off-white; pure #fff is a tell */
+  --muted: #8A857C; /* dates, labels, captions */
+  --rule:  #2A2724; /* hairlines — the only separator on the site */
+
+  --font-serif: 'Newsreader', Georgia, serif;
+  --font-sans:  'Inter', system-ui, sans-serif;
+
+  /* Type scale, ratio 1.25 (major third) from a 1rem base. */
+  --step--1: 0.8rem;
+  --step-0:  1rem;
+  --step-1:  1.25rem;
+  --step-2:  1.563rem;
+  --step-3:  1.953rem;
+  --step-4:  2.441rem;
+
+  --measure: 65ch;
+  --rule-width: 1px;
+}
