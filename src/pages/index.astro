@@ -1,17 +1,35 @@
 ---
+import { getCollection } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+import WorkList from '../components/WorkList.astro';
+import { SITE } from '../config';
 
+const viz = (await getCollection('viz')).filter((e) => e.data.featured);
+const projects = (await getCollection('projects')).filter((e) => e.data.featured);
+
+const items = [
+  ...viz.map((e) => ({
+    href: e.data.writeup ? `/visualizations/${e.id}` : e.data.chart.src,
+    title: e.data.title, date: e.data.date, summary: e.data.summary,
+  })),
+  ...projects.map((e) => ({
+    href: `/data-science/${e.id}`,
+    title: e.data.title, date: e.data.date, summary: e.data.summary,
+  })),
+].sort((a, b) => b.date.valueOf() - a.date.valueOf());
 ---
+<Layout title="Home">
+  <section class="intro">
+    <h1>{SITE.name}</h1>
+    <p>{SITE.bio}</p>
+  </section>
+  <h2 class="label">Selected work</h2>
+  <WorkList items={items} />
+</Layout>
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<style>
+  .intro { margin-bottom: 4rem; }
+  .intro h1 { margin: 0 0 1rem; }
+  .intro p { font-size: var(--step-1); }
+  h2.label { margin: 0 0 1.5rem; }
+</style>

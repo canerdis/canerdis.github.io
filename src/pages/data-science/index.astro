@@ -1,0 +1,17 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import WorkList from '../../components/WorkList.astro';
+
+const items = (await getCollection('projects'))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .map((e) => ({ href: `/data-science/${e.id}`, title: e.data.title, date: e.data.date, summary: e.data.summary }));
+---
+<Layout title="Data Science">
+  <h1>Data Science</h1>
+  <WorkList items={items} />
+</Layout>
+
+<style>
+  h1 { margin: 0 0 3rem; }
+</style>
