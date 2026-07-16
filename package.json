@@ -10,7 +10,8 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "test": "node --test scripts/lint/*.test.mjs"
+    "test": "node --test scripts/lint/*.test.mjs",
+    "lint:design": "node scripts/design-lint.mjs"
   },
   "dependencies": {
     "astro": "^7.0.9"
