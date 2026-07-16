@@ -1,0 +1,39 @@
+---
+interface Item { href: string | null; title: string; date: Date; summary: string }
+interface Props { items: Item[] }
+const { items } = Astro.props;
+const fmt = (d: Date) =>
+  d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }).toUpperCase();
+---
+<ol class="worklist">
+  {items.map((item) => (
+    <li>
+      <time class="label" datetime={item.date.toISOString()}>{fmt(item.date)}</time>
+      <div class="body">
+        <h3>{item.href ? <a href={item.href}>{item.title}</a> : item.title}</h3>
+        <p>{item.summary}</p>
+      </div>
+    </li>
+  ))}
+</ol>
+
+<style>
+  .worklist { list-style: none; margin: 0; padding: 0; }
+  .worklist li {
+    display: grid;
+    grid-template-columns: 8rem 1fr;
+    gap: 2rem;
+    padding-top: 1rem;
+    margin-bottom: 2.5rem;
+    border-top: var(--rule-width) solid var(--rule);
+  }
+  .worklist h3 { margin: 0 0 0.4rem; }
+  .worklist p { margin: 0; color: var(--muted); }
+  time { display: block; padding-top: 0.35rem; }
+
+  /* The rail collapses on narrow screens; the date leads instead. */
+  @media (max-width: 40rem) {
+    .worklist li { grid-template-columns: 1fr; gap: 0.5rem; }
+    time { padding-top: 0; }
+  }
+</style>

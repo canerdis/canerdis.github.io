@@ -1,0 +1,47 @@
+---
+import '../styles/global.css';
+import { SITE } from '../config';
+interface Props { title: string; description?: string }
+const { title, description = SITE.bio } = Astro.props;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title} — {SITE.name}</title>
+    <meta name="description" content={description} />
+    <link rel="preload" href="/fonts/Newsreader-Variable.woff2" as="font" type="font/woff2" crossorigin />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <div class="shell">
+      <nav aria-label="Primary">
+        <a href="/">{SITE.name}</a>
+        <a href="/visualizations">Visualizations</a>
+        <a href="/data-science">Data Science</a>
+      </nav>
+      <main id="main"><slot /></main>
+      <footer>
+        {SITE.links.map((l) => <a href={l.href}>{l.label}</a>)}
+      </footer>
+    </div>
+  </body>
+</html>
+
+<style>
+  .shell { max-width: 68rem; margin: 0 auto; padding: 2rem 1.25rem 6rem; }
+  nav {
+    display: flex; gap: 1.5rem; align-items: baseline;
+    padding-bottom: 1.5rem; margin-bottom: 3rem;
+    border-bottom: var(--rule-width) solid var(--rule);
+    font-family: var(--font-sans); font-size: var(--step--1);
+  }
+  nav a:first-child { margin-right: auto; font-family: var(--font-serif); font-size: var(--step-0); }
+  footer {
+    display: flex; gap: 1.5rem;
+    margin-top: 6rem; padding-top: 1.5rem;
+    border-top: var(--rule-width) solid var(--rule);
+    font-family: var(--font-sans); font-size: var(--step--1); color: var(--muted);
+  }
+</style>
