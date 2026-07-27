@@ -21,7 +21,10 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          # Astro 7 requires Node >=22.12.0 (see its package.json engines field),
+          # and 24 is what the site is developed and verified against locally.
+          # Node 20 installs and passes the unit tests, then fails at `astro build`.
+          node-version: 24
           cache: npm
       - run: npm ci
       - run: npm test
