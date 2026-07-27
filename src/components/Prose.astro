@@ -13,4 +13,38 @@
     border-left: var(--rule-width) solid var(--rule); color: var(--muted);
   }
   .prose :global(code) { font-family: var(--font-sans); font-size: 0.9em; }
+
+  /* Data tables carry most of the argument in these write-ups, so they get the
+     sans treatment: Inter is the machine-ish voice, and tabular figures are what
+     make a column of numbers readable as a column. `display: block` is the
+     CSS-only scroll container — a six-column table does not fit 375px, and the
+     page itself must never scroll sideways. */
+  .prose :global(table) {
+    display: block;
+    overflow-x: auto;
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0 2rem;
+    font-family: var(--font-sans);
+    font-size: var(--step--1);
+    font-variant-numeric: tabular-nums lining-nums;
+  }
+  .prose :global(th) {
+    text-align: left;
+    font-weight: 500;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 0 1.5rem 0.55rem 0;
+    border-bottom: var(--rule-width) solid var(--rule);
+    white-space: nowrap;
+  }
+  .prose :global(td) {
+    padding: 0.55rem 1.5rem 0.55rem 0;
+    border-bottom: var(--rule-width) solid var(--rule);
+    vertical-align: top;
+  }
+  .prose :global(tr:last-child td) { border-bottom: 0; }
+  .prose :global(th:last-child), .prose :global(td:last-child) { padding-right: 0; }
+  .prose :global(table strong) { font-weight: 600; }
 </style>

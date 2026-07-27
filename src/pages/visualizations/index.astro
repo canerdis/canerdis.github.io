@@ -3,9 +3,13 @@ import { getCollection } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import VizCard from '../../components/VizCard.astro';
 
-const items = (await getCollection('viz')).sort(
-  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
-);
+// Featured first, then newest. Without the featured tiebreak, entries sharing a
+// date fall back to filename order and the gallery opens on whatever sorts
+// alphabetically first rather than on the strongest chart.
+const items = (await getCollection('viz')).sort((a, b) => {
+  if (a.data.featured !== b.data.featured) return a.data.featured ? -1 : 1;
+  return b.data.date.valueOf() - a.data.date.valueOf();
+});
 ---
 <Layout title="Visualizations">
   <h1>Visualizations</h1>
