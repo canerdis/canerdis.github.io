@@ -20,6 +20,10 @@ snapshots of every player's attribute ratings. The question I set out to answer:
 **which player attributes actually explain goal and assist output, and how much of
 an apparent skill effect is really just playing time?**
 
+There is also an [interactive report](/football-dashboard.html) covering the same
+analysis, and the [source and pipeline](https://github.com/canerdis/football-analytics)
+are on GitHub.
+
 ## The headline
 
 Correlation between a player's finishing rating and their goals, tightened one
