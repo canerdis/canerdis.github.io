@@ -5,7 +5,7 @@ export const SITE = {
   name: 'Caner Diş',
   bio:
     'I am a statistics student in Istanbul and a data analyst at Europe Magazine, ' +
-    'where I clean public datasets from Eurostat and the World Bank and turn them ' +
+    'where I clean public datasets from Eurostat, the World Bank etc. and turn them ' +
     'into published charts and written analysis for an audience of over 100,000. ' +
     'I work mostly in Python and SQL, with Power BI, Tableau and Flourish for ' +
     'dashboards and visual storytelling, and spent an exchange semester at Ulm ' +
