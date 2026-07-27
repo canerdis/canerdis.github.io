@@ -10,6 +10,7 @@ alt: >-
   goals, rising from 0.303 for all players to 0.618 for attackers with at least
   ten starts measured per start.
 tools: [Python, pandas, SQLite, matplotlib, XML]
+repo: https://github.com/canerdis/football-analytics
 featured: true
 ---
 

@@ -10,6 +10,7 @@ alt: >-
   Grouped bar chart comparing two models against a majority-class baseline across
   five metrics. The baseline scores 0.82 accuracy but 0.00 F1 and 0.50 ROC-AUC.
 tools: [Python, scikit-learn, scikit-optimize, pandas]
+repo: https://github.com/canerdis/depression-prediction
 featured: true
 ---
 
