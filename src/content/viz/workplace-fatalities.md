@@ -13,6 +13,7 @@ tools: [Python, SQL, Excel, Flourish]
 writeup: true
 featured: false
 published: true
+instagram: https://www.instagram.com/p/DXykwbuDNXg/
 ---
 
 Around 3 million people die from workplace accidents worldwide every year. In the
