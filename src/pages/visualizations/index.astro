@@ -13,6 +13,12 @@ const items = (await getCollection('viz')).sort((a, b) => {
 ---
 <Layout title="Visualizations">
   <h1>Visualizations</h1>
+  <p class="intro">
+    Charts I have made for the places I work and for myself. Most of these ran in
+    Europe Magazine, where I clean the public data and write the analysis that goes
+    with the graphic; the rest started as a question I wanted answered. They are
+    shown as they were published, frames and all.
+  </p>
   <div class="grid">
     {items.map((e) => (
       <VizCard
@@ -31,7 +37,8 @@ const items = (await getCollection('viz')).sort((a, b) => {
 </Layout>
 
 <style>
-  h1 { margin: 0 0 3rem; }
+  h1 { margin: 0 0 1rem; }
+  .intro { margin: 0 0 3rem; color: var(--muted); font-size: var(--step-1); }
   .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 4rem 3rem; }
   @media (max-width: 48rem) { .grid { grid-template-columns: 1fr; gap: 3rem; } }
 </style>
