@@ -1,12 +1,21 @@
 ---
 import { Picture } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
-interface Props { href: string; title: string; summary: string; chart: ImageMetadata; alt: string; hasWriteup: boolean }
-const { href, title, summary, chart, alt, hasWriteup } = Astro.props;
+interface Props {
+  href: string; title: string; summary: string;
+  chart: ImageMetadata; alt: string; hasWriteup: boolean;
+  source?: string;
+}
+const { href, title, summary, chart, alt, hasWriteup, source } = Astro.props;
 ---
 <article class="card">
-  <a href={href}>
+  <a class="frame" href={href}>
     <Picture src={chart} alt={alt} widths={[400, 800, 1200]} sizes="(max-width: 40rem) 100vw, 45vw" formats={['avif', 'webp']} />
+    {source && (
+      <span class="reveal" aria-hidden="true">
+        <span class="label">{source}</span>
+      </span>
+    )}
   </a>
   <h3><a href={href}>{title}</a></h3>
   <p>{summary}</p>
@@ -19,4 +28,24 @@ const { href, title, summary, chart, alt, hasWriteup } = Astro.props;
   .card h3 { margin: 0.75rem 0 0.3rem; font-size: var(--step-1); }
   .card p { margin: 0 0 0.4rem; color: var(--muted); font-size: var(--step-0); }
   /* No card border, no shadow, no radius. Hairlines are the only separator. */
+
+  /* Hover reveal. Deliberately supplementary: the summary sits below the tile
+     and the full text lives on the linked page, so nothing here is the only
+     route to the content — hover does not exist on touch devices. Mirrored on
+     :focus-visible so keyboard users get the same cue. */
+  .frame { position: relative; display: block; }
+  .reveal {
+    position: absolute;
+    inset: auto 0 0 0;
+    padding: 0.6rem 0.75rem;
+    background: var(--bg);
+    opacity: 0;
+    transition: opacity 120ms ease;
+  }
+  .frame:hover .reveal,
+  .frame:focus-visible .reveal { opacity: 0.92; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { transition: none; }
+  }
 </style>
