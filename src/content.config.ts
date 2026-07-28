@@ -17,6 +17,12 @@ const viz = defineCollection({
       // something to say do not acquire thin one-paragraph stub pages.
       writeup: z.boolean().default(false),
       featured: z.boolean().default(false),
+      // true => the image is an artefact published elsewhere (its own title,
+      // legend and masthead, on its own light background) rather than a chart
+      // exported through charts/house.mplstyle for this site. Framed with a
+      // hairline so it reads as a clipping instead of looking like a native
+      // chart that got the background wrong.
+      published: z.boolean().default(false),
     }),
 });
 

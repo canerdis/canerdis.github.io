@@ -21,7 +21,7 @@ const fmt = (d: Date) =>
     <time class="label" datetime={entry.data.date.toISOString()}>{fmt(entry.data.date)}</time>
     <h1>{entry.data.title}</h1>
     <p class="summary">{entry.data.summary}</p>
-    <Figure chart={entry.data.chart} alt={entry.data.alt} source={entry.data.source} />
+    <Figure chart={entry.data.chart} alt={entry.data.alt} source={entry.data.source} published={entry.data.published} />
     <Prose><Content /></Prose>
     {entry.data.tools.length > 0 && <p class="label">Tools: {entry.data.tools.join(', ')}</p>}
   </article>
