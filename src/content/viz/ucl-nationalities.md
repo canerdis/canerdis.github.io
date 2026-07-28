@@ -6,13 +6,15 @@ summary: >-
   nations once dominated; now the minutes spread much wider.
 chart: ../../assets/viz/ucl-nationalities.jpg
 alt: >-
-  Stacked area chart of minutes played in Champions League finals from 1956 to
-  2025, split by player nationality, widening in range after the mid-1990s.
+  Heatmap grid of Champions League final minutes from 1956 to 2025, one row per
+  nationality and one column per year, with cells shaded by minutes played. The
+  shading spreads across many more rows after the mid-1990s.
 source: UEFA · Europe Magazine
 tools: [Python, SQL, Excel, Flourish]
 writeup: true
 featured: false
 published: true
+instagram: https://www.instagram.com/p/DY6wMX_DEzU/
 ---
 
 Charting minutes played in European finals by nationality, from 1956 to 2025, turns

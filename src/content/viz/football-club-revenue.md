@@ -6,13 +6,25 @@ summary: >-
   the gap inside the continent is widening.
 chart: ../../assets/viz/football-club-revenue.jpg
 alt: >-
-  Ranked chart of Europe's top 30 football clubs by revenue, with Premier League
-  clubs making up fifteen of the thirty.
+  Country shapes arranged in a ring, each labelled with how many of Europe's top
+  30 revenue-generating clubs it holds: England 15, Germany 4, Italy 4, Spain 3,
+  Türkiye 2, France 1, Portugal 1, with club crests attached to each.
 source: Deloitte Football Money League 2026 · Europe Magazine
 tools: [Python, SQL, Excel, Flourish]
 writeup: true
 featured: false
 published: true
+instagram: https://www.instagram.com/p/DU-c53mjF9u/
+gallery:
+  - ../../assets/viz/football-club-revenue-2.jpg
+  - ../../assets/viz/football-club-revenue-3.jpg
+galleryAlt:
+  - >-
+    Bar chart ranking Europe's top 30 clubs by revenue, from Real Madrid at
+    €1,161M down to Brentford at €206M.
+  - >-
+    Treemap comparing the big five leagues by revenue stream. England leads on
+    broadcasting at €3,825M against Spain's €1,797M and Germany's €1,534M.
 ---
 
 European football dominates global revenue, but the more interesting split is the

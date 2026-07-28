@@ -6,13 +6,15 @@ summary: >-
   likely to end in hostility than in conversation.
 chart: ../../assets/viz/political-polarization.jpg
 alt: >-
-  Choropleth map of Europe shading countries by social polarisation index, with
-  Türkiye, Poland and Belarus at the top of the scale.
+  Connected dot plot ranking European countries by social polarisation, each with
+  a blue dot for 2000 and a red dot for 2025 joined by a line. Türkiye and Poland
+  top the scale at 3.98.
 source: V-Dem · Europe Magazine
 tools: [Python, SQL, Excel, Flourish]
 writeup: true
 featured: false
 published: true
+instagram: https://www.instagram.com/p/DYWrWGzjOyy/
 ---
 
 Since 2000, political division in Europe has moved out of the ballot box and into

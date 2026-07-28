@@ -13,6 +13,7 @@ tools: [Python, SQL, Excel, Flourish]
 writeup: true
 featured: false
 published: true
+instagram: https://www.instagram.com/p/DUacTQxjIaR/
 ---
 
 Median disposable income tells you the level. It does not tell you how that income

@@ -23,7 +23,16 @@ const fmt = (d: Date) =>
     <p class="summary">{entry.data.summary}</p>
     <Figure chart={entry.data.chart} alt={entry.data.alt} source={entry.data.source} published={entry.data.published} />
     <Prose><Content /></Prose>
+    {/* Carousel pages 2 and 3 — the argument continues past the first image. */}
+    {entry.data.gallery.map((img, i) => (
+      <Figure chart={img} alt={entry.data.galleryAlt[i]} published={entry.data.published} />
+    ))}
     {entry.data.tools.length > 0 && <p class="label">Tools: {entry.data.tools.join(', ')}</p>}
+    {entry.data.instagram && (
+      <p class="label">
+        Originally published: <a href={entry.data.instagram}>view the post on Instagram</a>
+      </p>
+    )}
   </article>
 </Layout>
 

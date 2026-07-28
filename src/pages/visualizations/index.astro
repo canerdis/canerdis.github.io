@@ -24,6 +24,7 @@ const items = (await getCollection('viz')).sort((a, b) => {
         hasWriteup={e.data.writeup}
         source={e.data.source}
         published={e.data.published}
+        date={e.data.date}
       />
     ))}
   </div>

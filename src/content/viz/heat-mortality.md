@@ -13,6 +13,7 @@ tools: [Python, SQL, Excel, Flourish]
 writeup: true
 featured: false
 published: true
+instagram: https://www.instagram.com/p/DaC0vpKDIch/
 ---
 
 Roughly **13,589** people die of heat-related causes each year across 854 European

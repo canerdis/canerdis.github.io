@@ -23,6 +23,18 @@ const viz = defineCollection({
       // hairline so it reads as a clipping instead of looking like a native
       // chart that got the background wrong.
       published: z.boolean().default(false),
+      // Where the piece originally ran. Shown on the detail page, because the
+      // post carries the byline and is the evidence the work is published.
+      instagram: z.string().url().optional(),
+      // Further images from the same post. These pieces ran as carousels, so a
+      // single `chart` would silently drop pages 2 and 3 of the argument.
+      gallery: z.array(image()).default([]),
+      galleryAlt: z.array(z.string()).default([]),
+    })
+    // Every extra image needs its own alt text, same rule as `chart`.
+    .refine((d) => d.gallery.length === d.galleryAlt.length, {
+      message: 'galleryAlt must have one entry per gallery image',
+      path: ['galleryAlt'],
     }),
 });
 
