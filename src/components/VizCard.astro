@@ -43,6 +43,18 @@ const published_on = date.toLocaleDateString('en-GB', { day: 'numeric', month: '
   .frame.published {
     border: var(--rule-width) solid var(--rule);
     padding: 0.5rem;
+    /* These arrive at whatever aspect the platform they ran on wanted — 3:4 from
+       Instagram, 4:5 from LinkedIn. Left alone the tiles end at different
+       heights and the grid rows stop lining up. A fixed box with `contain`
+       keeps every frame the same size without cropping any of the chart. */
+    aspect-ratio: 3 / 4;
+    display: grid;
+    place-items: center;
+  }
+  .frame.published :global(img) {
+    max-height: 100%;
+    width: auto;
+    object-fit: contain;
   }
   .reveal {
     position: absolute;
