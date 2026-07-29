@@ -1,103 +1,87 @@
 ---
-title: What actually explains a footballer's goal count
-date: 2026-07-27
+title: Football Business Analytics
+date: 2026-01-21
 summary: >-
-  Player and match analysis across 25,979 matches in 11 European leagues, asking
-  how much of an apparent skill effect is really just playing time.
-cover: ../../assets/viz/football-segmentation.png
+  Group project for the Business Analytics course at Ulm. Two star schemas over
+  25,000+ matches, built to answer what a scout and a coach each need to know.
+cover: ../../assets/viz/football-attributes.png
 alt: >-
-  Horizontal bar chart of four Pearson correlations between finishing rating and
-  goals, rising from 0.303 for all players to 0.618 for attackers with at least
-  ten starts measured per start.
-tools: [Python, pandas, SQLite, matplotlib, XML]
+  Three panels of horizontal bars showing the six attributes most correlated with
+  goals and assists for defenders, midfielders and attackers.
+tools: [Python, SQL, SQLite, pandas, matplotlib, Flourish]
 repo: https://github.com/canerdis/football-analytics
 featured: true
 ---
 
-The [Kaggle European Soccer Database](https://www.kaggle.com/datasets/hugomathien/soccer)
-covers 25,979 matches across 11 leagues between 2008 and 2016, with per-season
-snapshots of every player's attribute ratings. The question I set out to answer:
-**which player attributes actually explain goal and assist output, and how much of
-an apparent skill effect is really just playing time?**
+A group project for the Business Analytics course at **Ulm University of Applied
+Sciences**, presented in January 2026. The brief was to take a real dataset and
+answer a question two different stakeholders would actually ask.
 
-There is also an [interactive report](/football-dashboard.html) covering the same
-analysis, and the [source and pipeline](https://github.com/canerdis/football-analytics)
-are on GitHub.
+We picked football because the industry has moved from subjective observation to
+budget decisions made on data, and because the [Kaggle European Soccer
+Database](https://www.kaggle.com/datasets/hugomathien/soccer) is messy enough to
+be worth the effort: 25,000+ matches and 10,000+ players across 11 countries,
+2008–2016, with match events stored as XML blobs inside a SQLite column.
 
-## The headline
+## Two questions, two stakeholders
 
-Correlation between a player's finishing rating and their goals, tightened one
-step at a time:
+**Scouts** need a talent filter: which attributes actually predict a goal scorer?
+**Coaches** need a tactical read: does holding the ball actually win matches?
 
-| Population | Pearson r |
-|---|---|
-| All players, total goals | 0.303 |
-| Attackers only | 0.573 |
-| Attackers with ≥10 starts | 0.615 |
-| Attackers with ≥10 starts, goals per start | **0.618** |
+Those are different grains, so they became two different fact tables.
 
-Analysed as one undifferentiated pool, finishing looks weakly related to scoring.
-Segmenting by position and requiring a minimum number of starts roughly doubles
-the measured relationship. The lesson is about the aggregation, not about
-football: a mixed population hides the effect.
+| Schema | Grain | Key | Dimensions |
+|---|---|---|---|
+| By season | one row per player per season | `player_api_id` + `season_id` | player, season |
+| By match | one row per team per match | `match_api_id` + `team_api_id` | team, league, time |
 
-The exposure control matters on its own. Among attackers who played, appearances
-correlate with goals at **r = 0.534** — playing time is nearly as good a predictor
-of a season's goal count as finishing skill is. Any analysis using season totals
-without normalising is partly measuring who got picked.
+Modelling it twice rather than forcing one table is the part of the project that
+transferred best to everything after it. The question sets the grain; the grain
+sets the schema.
 
-## Validating the parse instead of trusting it
+## What we found
 
-The `Match.goal` field stores XML event blobs, and it contains more than scored
-goals. Counting every `<player1>` element — the obvious reading — captures 39,863
-events, of which 2,374 are not goals for that player:
+**Mental attributes beat athletic ones.** Across defenders, midfielders and
+attackers, *reactions* and *positioning* correlate with output more strongly than
+pure physical ratings do. For scouting under a transfer budget that matters,
+because those attributes are cheaper to buy than pace.
 
-| `goal_type` | Count | Treatment |
-|---|---|---|
-| `n` normal | 34,514 | Counted |
-| `p` penalty | 2,975 | Counted |
-| `o` own goal | 1,116 | Excluded — the goal counts for the opposition |
-| `npm` missed penalty | 728 | Excluded, not a goal |
-| `dg` disallowed goal | 518 | Excluded, not a goal |
-| `rp`, `psm` | 12 | Excluded |
+**Possession has a break-even point, not a guarantee.** Teams above roughly **50%**
+possession win more often, but the distributions overlap heavily — plenty of
+matches are won on well under half the ball. Possession is a KPI a coach can use,
+not a rule that decides games.
 
-I checked the parse against the recorded scorelines: `n + p + o` reproduces
-`home_team_goal + away_team_goal` on **99.9%** of matches, against 91.6% for the
-naive parse. That reconciliation is what identified the excluded types in the
-first place — the categories were not documented anywhere.
+## Where the pipeline was wrong, and how we found out
 
-## Three decisions that changed the numbers
+The `Match.goal` column stores XML, and the obvious parse — count every
+`<player1>` element — is wrong. It captures 39,863 events, of which **2,374 are
+not goals for that player**: own goals, missed penalties, disallowed goals.
 
-**Goalkeepers get their own class.** Scoring a keeper on outfield attributes puts
-them wherever their least-bad attribute lands; 6,304 keeper-seasons would
-otherwise have been distributed across the outfield classes, most into Midfielder.
+Nothing in the schema says so. What exposed it was reconciling the parsed totals
+against the recorded scorelines: the naive parse matched on **91.6%** of matches,
+and once own goals were credited to the opposition and the non-goal event types
+excluded, that rose to **99.9%**.
 
-**Incomplete attribute rows are dropped, not defaulted.** 1,518 player-seasons are
-missing at least one of the twelve classification attributes. Comparing `NaN`
-returns `False`, so a chained if/elif silently routed all of them to the fallback
-branch rather than failing — a bug that is invisible unless you go looking.
+Two smaller corrections came out of the same pass:
 
-**Assists are credited only on open-play goals.** `<player2>` appears on a handful
-of penalty and own-goal events, where an assist is not a meaningful concept.
+- **Goalkeepers were being classified as midfielders.** Scoring a keeper on
+  outfield attributes puts them wherever their least-bad attribute lands, so 6,304
+  keeper-seasons were quietly distributed across the outfield classes.
+- **1,518 player-seasons had incomplete attribute rows.** Comparing `NaN` returns
+  `False`, so a chained if/elif routed all of them to the fallback branch instead
+  of failing — invisible unless you go looking for it.
 
-Everything joins into one player-season fact table of 68,697 rows.
+## Afterwards
 
-## What the possession chart does not say
-
-Average goal difference climbs monotonically across possession buckets, which
-looks like a strong relationship. At match level the correlation is only
-**r = 0.260**. Both are true: binning collapses the within-bucket scatter, so
-orderly bin means and a weak individual-match relationship coexist comfortably.
-Holding the ball is a weak predictor of winning, and the tidy-looking chart is
-exactly the kind of figure that would suggest otherwise if read carelessly.
+I kept working on it after the course ended. Segmenting by position and adding a
+minimum-appearances filter raised the correlation between finishing rating and
+goals from **0.303 to 0.618**, and appearances alone correlate with goals at
+**0.534** — meaning a season total is partly a measure of who got picked, not who
+finished well.
 
 ## Limitations
 
-- Appearances are **starts only**. The schema has no substitute records, so
-  substitute goals count toward a player not credited with the appearance. The
-  ≥10 starts filter limits the distortion; it does not remove it.
-- 2.9% of matches carry no lineup data and contribute no appearances.
-- Position class is recomputed per season, so a player can change class between
-  seasons.
-- These correlations are descriptive. No causal claim is intended — finishing
-  rating is itself partly assigned by observers who watched the player score.
+- Appearances are starts only; the schema has no substitute records.
+- 2.9% of matches carry no lineup data.
+- These are correlations. Finishing rating is itself partly assigned by observers
+  who watched the player score.

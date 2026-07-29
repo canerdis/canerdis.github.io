@@ -1,135 +1,103 @@
 ---
-title: When the dataset changes underneath a finished project
-date: 2026-07-27
+title: Machine Learning Lab — Student Depression
+date: 2026-02-10
 summary: >-
-  A group machine-learning project had to be rebuilt after its dataset was
-  replaced. Diagnosing why the original pipeline could no longer run at all
-  turned out to be the interesting part.
-cover: ../../assets/viz/depression-model-comparison.png
+  Group project at Ulm comparing four classifiers on a student survey, and what
+  changed when the dataset underneath it was replaced.
+cover: ../../assets/viz/ml-lab-results.png
 alt: >-
-  Grouped bar chart comparing two models against a majority-class baseline across
-  five metrics. The baseline scores 0.82 accuracy but 0.00 F1 and 0.50 ROC-AUC.
-tools: [Python, scikit-learn, scikit-optimize, pandas]
+  Grouped bar chart of accuracy and sensitivity for four classifiers and a
+  majority-class baseline. The baseline reaches 100 percent sensitivity at 58.6
+  percent accuracy.
+tools: [Python, scikit-learn, pandas, scikit-optimize]
 repo: https://github.com/canerdis/depression-prediction
 featured: true
 ---
 
-This started as a completed Machine Learning Lab group project and stopped
-working when the dataset underneath it was replaced. The change was not
-cosmetic — the original notebook cannot be pointed at the new files at all.
+A five-person group project for the Machine Learning Lab at **Ulm University of
+Applied Sciences**: predict depression from a 27,900-record student survey, and
+compare classifier families properly rather than reaching for one.
 
-| | Old dataset | New `train.csv` |
+## Getting the data usable
+
+The survey was dirtier than its shape suggested. The `City` column alone
+contained city names, degree titles, free text and bare numbers mixed together —
+so it was repaired first, then replaced with each city's population, which turns
+an unusable high-cardinality string field into one ordered number.
+
+The rest of the preparation was ordinary and deliberate: binary flags for
+gender, suicidal thoughts and family history; ordinal encoding where the
+categories have a real order (sleep duration, dietary habits, degree level); an
+80/20 **stratified** split; Min–Max scaling.
+
+One detail worth stating because it is the usual place student projects go wrong:
+**the scaler was fitted on the training split only** and applied to the test set,
+not fitted on the full table before splitting. No leakage.
+
+## Four classifiers
+
+| Model | Accuracy | Sensitivity |
 |---|---|---|
-| Rows | 27,901 | 140,700 |
-| Population | Students only | Students **and** working professionals |
-| Depression rate | 58.6% | 18.2% |
-| Missing values | None | 80% on the academic columns |
-| `Sleep Duration` values | 5 | 36 |
-| `Degree` values | 28 | 115 |
+| Decision Tree (post-pruned) | 81.67% | 81.74% |
+| Random Forest | 82.30% | 83.56% |
+| k-Nearest Neighbours | 81.78% | 82.47% |
+| **Neural Network** | **83.80%** | 79.78% |
 
-The old file turns out to be the **student subset** of the new one: the student
-depression rate in `train.csv` is 0.5855, matching the old file's rate exactly.
+The decision tree's pruning parameter was not guessed: `cost_complexity_pruning_path`
+generated the candidate alphas and `GridSearchCV` with 5 folds picked one.
 
-## The nulls are structural, not missing
+The interesting part is that **the ranking flips depending on the metric**. The
+neural network wins on accuracy; Random Forest wins on sensitivity, which for a
+screening tool is the one that matters — a missed case is worse than a false
+alarm. Reporting only the headline number would have chosen the wrong model.
 
-Students answer the academic block; working professionals answer the work block.
-The two never overlap:
+## What the presentation was missing
 
-| Column pair | Both populated | Neither | Exactly one |
-|---|---|---|---|
-| Academic / Work Pressure | 0 | 21 | 140,679 |
-| Study / Job Satisfaction | 2 | 15 | 140,683 |
+Looking back at it with more experience, the comparison needed a row it did not
+have: **the majority-class baseline**. At a 58.6% positive rate, predicting
+"depressed" for everybody scores 58.6% accuracy and **100% sensitivity**.
 
-Both pairs are measured on the same 1–5 scale, so each pair collapses into a
-single feature with no information loss — turning a column that is 80% "missing"
-into one that is fully populated. Treating those nulls as missing data to be
-imputed would have been wrong: nothing is missing, the question simply was not
-asked.
+That does not overturn the result — every model beats 58.6% accuracy by more than
+20 points, so they are all learning something real. But without the baseline on
+the chart, a reader cannot tell whether 83% sensitivity is good, and cannot see
+that the do-nothing rule beats every model on that metric alone. It is on the
+chart above now.
 
-## Four ways the original pipeline breaks
+Two other things I would do differently:
 
-1. **`dropna()` returns 0 of 140,700 rows.** Every row is null on either the
-   academic or the work block, so dropping incomplete rows drops everything. The
-   old pipeline would hand an empty frame to the model.
-2. **The sleep-duration lookup maps 100% of rows to NaN.** The old file stored
-   these values with literal quote characters (`"'5-6 hours'"`); this one does
-   not, and adds 32 further variants. A four-key dictionary matches nothing.
-3. **Three columns are dropped that now carry the signal.** `Profession`,
-   `Work Pressure` and `Job Satisfaction` were dropped for being constant —
-   correct for a students-only file, wrong here, where 112,799 working
-   professionals have real values in exactly those fields.
-4. **Balancing by undersampling would discard 89,566 rows — 63.7% of the data.**
-   The old class split was 58/42, so undersampling cost little. This one is 82/18.
+- **All four models were compared on the same test set, and the best was chosen by
+  that comparison.** That makes the reported figure slightly optimistic; a separate
+  validation split or nested cross-validation would keep the test set clean.
+- **One 80/20 split** carries sampling noise. The 2.1-point spread between the
+  weakest and strongest model is within the range a different random seed could
+  produce, so "the neural network is best" is a weaker claim than it looks.
 
-A fifth issue is latent rather than live: rows were removed with
-`pd.concat([df, sample]).drop_duplicates(keep=False)`, which also deletes any
-*naturally* duplicated rows. Both files happen to have none once `id` is
-included, so nothing was lost — but the correctness depended on a property of the
-data that nobody had checked.
+## When the dataset was replaced
 
-## Why accuracy became the wrong headline
+The dataset this was built on was later swapped for one five times the size —
+140,700 records covering working professionals as well as students — and the
+original pipeline could no longer run at all. Its cleaning step returned **0 of
+140,700 rows**, because every row is null on either the academic block or the work
+block, and a hard-coded lookup mapped **100%** of sleep-duration values to null.
 
-At an 82/18 split, **predicting "not depressed" for every single person scores
-0.8183 accuracy.** The original notebook reported 81.67%–83.80% across four
-models. Those numbers were honest on balanced data; carried over to this dataset
-they would be indistinguishable from a model that has learned nothing.
+Rebuilding it for that data changed the conclusions:
 
-So the baseline is reported as a row in the results table rather than assumed:
-
-| Model | ROC-AUC | PR-AUC | Balanced acc. | F1 | Accuracy |
-|---|---|---|---|---|---|
-| HistGradientBoosting | **0.9747** | **0.9068** | **0.9214** | **0.8044** | 0.9181 |
-| Logistic Regression | 0.9740 | 0.9034 | 0.9194 | 0.7976 | 0.9145 |
-| Majority baseline | 0.5000 | 0.1817 | 0.5000 | 0.0000 | 0.8183 |
-
-Five-fold stratified cross-validation on all 140,700 rows. The baseline row is
-the point: 0.8183 accuracy alongside 0.5 ROC-AUC and 0.0 F1.
-
-## Searching harder did not help
-
-The hyperparameters above were chosen by hand, so I replaced that with three
-search strategies and measured whether searching actually helps. A 20% holdout is
-split off before any search runs, and no search ever sees it.
-
-**It did not.** Across 12 configurations drawn from a wide six-dimensional space,
-the worst scored 0.9026 and the best 0.9067 — a spread of 0.004, for 102 extra
-model fits and roughly 30× the compute.
-
-That is a result rather than a failure, and the candidate spread is the evidence.
-When every point in the space performs within half a percentage point of every
-other point, the response surface is flat and no amount of extra budget will find
-anything, because there is nothing to find. Had the spread been wide, a
-12-candidate budget would have been the binding constraint and the honest
-conclusion would have been "search harder."
-
-Two secondary observations. **Tuning optimism is negligible here** (+0.0013,
-+0.0003, −0.0002): with 112,560 rows in the search pool, a 3-fold CV estimate is
-stable enough that selecting the maximum over a dozen candidates barely overfits
-it — on a small dataset, this gap is where over-optimistic results come from.
-And **Bayesian search cost 1.8× the wall time of random search for no gain**,
-because it is sequential and cannot parallelise across candidates. It earns its
-keep when individual fits are expensive and the surface has real structure;
-neither is true here.
-
-## Read `age` carefully
-
-Permutation importance ranks `age` far above everything else at 0.1425, with
-`suicidal_thoughts` next at 0.0270. But `age` is doing two jobs at once:
-depression falls monotonically from 64.3% in the 18–22 band to 0.8% in the 45–60
-band, and `age < 30` also predicts student status with 84.5% accuracy.
-
-`is_student` scores only 0.0026 — not because the cohort is irrelevant, but
-because permuting it leaves `age` carrying the same information. Permutation
-importance understates any feature that has a correlated twin, and these two are
-twins. Reading the table without that caveat would lead you to drop the cohort
-flag as useless.
+- The 80% null rate was **structural, not missing** — students and professionals
+  answer different question blocks — so each complementary pair collapsed onto its
+  shared 1–5 scale rather than being imputed.
+- The class split moved from 58/42 to 82/18, so accuracy stopped meaning anything:
+  the majority rule alone scores **0.8183**. PR-AUC and balanced accuracy replaced
+  it as the headline, with the best model at **ROC-AUC 0.975, PR-AUC 0.907** under
+  5-fold stratified cross-validation.
+- Grid, randomized and Bayesian hyperparameter search all landed within **0.0001
+  PR-AUC** of hand-picked values, which says the response surface is flat rather
+  than that the search was too small.
 
 ## Limitations
 
-- `test.csv` has no labels, so every number here is cross-validated on train. No
-  score against the competition's held-out set is claimed.
+- The competition's held-out set has no labels, so every figure from the rebuild
+  is cross-validated on train.
 - `CGPA` exists only for students and is left missing for professionals rather
-  than imputed across cohorts, which would invent a grade point average for
-  people who have none.
-- This is a synthetic Kaggle dataset generated from a real survey. Relationships
+  than imputed across cohorts.
+- The replacement data is synthetic, generated from a real survey. Relationships
   in it are not evidence about actual mental health.
