@@ -1,5 +1,5 @@
 ---
-title: Staj Bulabilmek İçin Ne Yapmak Lazım?
+title: 463 applications, zero offers
 date: 2026-07-28
 summary: >-
   I kept the data on my own internship search and put it through a Sankey
