@@ -138,7 +138,10 @@ const items = [
   .section-head h2 { margin: 0; }
   .more { display: flex; gap: var(--space-m); margin: 0; }
 
-  @media (max-width: 40rem) {
+  /* 48rem, the same value the gallery grid and VizCard's `sizes` use. Custom
+     properties cannot appear in a media condition, so the number is repeated
+     rather than shared. Changing one means changing all four. */
+  @media (max-width: 48rem) {
     .intro { grid-template-columns: 1fr; gap: 1.5rem; }
     .portrait { width: 9rem; height: 9rem; }
     .fact { grid-template-columns: 1fr; gap: 0.15rem; }

@@ -92,7 +92,10 @@ const fmt = (d: Date) =>
   time { display: block; }
 
   /* The rail collapses on narrow screens; the date leads instead. */
-  @media (max-width: 40rem) {
+  /* 48rem, the same value the gallery grid and VizCard's `sizes` use. Custom
+     properties cannot appear in a media condition, so the number is repeated
+     rather than shared. Changing one means changing all four. */
+  @media (max-width: 48rem) {
     .worklist li { grid-template-columns: 1fr; gap: 0.5rem; }
     .rail { flex-direction: column-reverse; gap: 0.75rem; }
   }
