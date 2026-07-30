@@ -12,7 +12,7 @@ export const SITE = {
     'Magazine, where I clean public datasets from statistical agencies, ' +
     'international organisations and industry sources and publish them as ' +
     'charts and written analysis for an audience over 100,000. ' +
-    'I don\'t just work with data; I try to understand the story behind it.',
+    'I don’t just work with data; I try to understand the story behind it.',
   // Dated, newest first, because that is what a CV is: claims you can place in
   // time. The years also make the left column mean the same thing here as it
   // does in the work list below — when — instead of two grids that look alike

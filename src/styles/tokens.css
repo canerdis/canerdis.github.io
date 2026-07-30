@@ -38,6 +38,7 @@
   /* Spacing, doubling. Not the 1.25 type ratio: neighbouring type sizes must
      stay distinguishable without shouting, whereas the largest gap has to be
      obviously larger than the smallest or sections stop reading as sections. */
+  --space-xs: 0.25rem;
   --space-s:  0.5rem;
   --space-m:  1rem;
   --space-l:  2rem;
