@@ -69,7 +69,7 @@ const items = [
     grid-template-columns: 13rem 1fr;
     gap: 2.5rem;
     align-items: start;
-    margin-bottom: 2.5rem;
+    margin-bottom: var(--space-l);
   }
   /* Deliberate on this one element, not a blanket radius: a portrait reads as
      a portrait when it is round, and nothing else on the site is rounded. */
@@ -93,15 +93,15 @@ const items = [
   /* Above the dated facts and in --fg, because this is the line a recruiter
      scans for. No indent: it belongs to the intro, not to the rail. */
   .tools {
-    margin: var(--space-l) 0 var(--space-m);
+    margin: var(--space-m) 0 var(--space-m);
     color: var(--fg);
   }
 
   /* The CV's shape: a short summary, then dated specifics you can scan. The
-     8rem rail matches the work list below, so the whole page reads one way:
-     when on the left, what on the right. */
+     rail clamps between 7rem and 16rem (22vw), matching the work list below,
+     so the whole page reads one way: when on the left, what on the right. */
   .facts {
-    margin: 0 0 var(--space-xl);
+    margin: 0 0 var(--space-l);
     padding-top: var(--space-m);
     border-top: var(--rule-width) solid var(--rule);
   }
