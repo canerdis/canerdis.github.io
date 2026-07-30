@@ -51,8 +51,9 @@ const fmt = (d: Date) =>
     margin-bottom: var(--space-l);
     border-top: var(--rule-width) solid var(--rule);
   }
-  /* One step above the summary beneath it: this is the line that gets
-     scanned, and at --step-1 it matched the body text exactly. */
+  /* Raised because at --step-1 it matched the bio paragraph above the list, so
+     the line to scan and the line to read were the same size. The summary
+     under each title inherits --step-0 and is two steps down from here. */
   .worklist h3 { margin: 0 0 var(--space-s); font-size: var(--step-2); }
   .worklist p { margin: 0; color: var(--muted); }
 
