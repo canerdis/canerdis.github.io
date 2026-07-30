@@ -28,7 +28,7 @@ const fmt = (d: Date) =>
       <div class="rail">
         {item.image && (
           <a class:list={['thumb', item.framed && 'framed']} href={item.href} tabindex="-1">
-            <Image src={item.image} alt={item.alt ?? item.title} widths={[256, 512]} sizes="16rem" loading="lazy" />
+            <Image src={item.image} alt={item.alt ?? item.title} widths={[256, 512, 800]} sizes="(max-width: 48rem) 100vw, 16rem" loading="lazy" />
           </a>
         )}
         <time class="label" datetime={item.date.toISOString()}>{fmt(item.date)}</time>
@@ -69,11 +69,6 @@ const fmt = (d: Date) =>
   .worklist p { margin: 0; color: var(--muted); }
 
   .rail { display: flex; flex-direction: column; gap: 0.6rem; }
-  /* One ratio for every thumbnail, so portrait and landscape sources line the
-     rail up instead of stepping in and out. */
-  /* The image is positioned rather than sized in percentages: `aspect-ratio`
-     does not give a grid row a definite height, so `height: 100%` silently
-     fell back to the image's own ratio and portrait sources overflowed. */
   /* No fixed box. These sources range from a portrait Instagram clipping to a
      three-panel chart wider than 3:1, and forcing one ratio on all of them
      either crops the wide ones to an unreadable middle slice or strands the
@@ -96,7 +91,7 @@ const fmt = (d: Date) =>
      properties cannot appear in a media condition, so the number is repeated
      rather than shared. Changing one means changing all four. */
   @media (max-width: 48rem) {
-    .worklist li { grid-template-columns: 1fr; gap: 0.5rem; }
+    .worklist li { grid-template-columns: 1fr; gap: var(--space-s); }
     .rail { flex-direction: column-reverse; gap: 0.75rem; }
   }
 </style>

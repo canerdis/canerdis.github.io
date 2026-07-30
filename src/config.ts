@@ -28,7 +28,7 @@ export const SITE = {
     { when: '2024–25', what: 'Market research analyst, Cybele' },
     { when: '2023 —', what: 'BSc Statistics, Mimar Sinan Fine Arts University' },
   ],
-  tools: 'Python, SQL and R for the analysis; Power BI, Tableau and Flourish for the output.',
+  tools: 'Python, SQL, R · Power BI, Tableau, Flourish',
   // Portrait shown beside the intro, masked to a circle in CSS. The source is
   // already cropped square and centred on the face, so no object-position
   // nudge is needed — a wide photo would have been cropped on the sides only,

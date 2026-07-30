@@ -76,7 +76,7 @@ const items = [
   .intro {
     display: grid;
     grid-template-columns: 13rem 1fr;
-    gap: 2.5rem;
+    gap: var(--space-l);
     align-items: start;
     margin-bottom: var(--space-l);
   }
@@ -89,7 +89,7 @@ const items = [
     object-fit: cover;
     border: var(--rule-width) solid var(--rule);
   }
-  .intro h1 { margin: 0 0 1rem; }
+  .intro h1 { margin: 0 0 var(--space-m); }
   .intro p {
     font-size: var(--step-1);
     margin: 0;
@@ -110,7 +110,7 @@ const items = [
      rail clamps between 7rem and 16rem (22vw), matching the work list below,
      so the whole page reads one way: when on the left, what on the right. */
   .facts {
-    margin: 0 0 var(--space-l);
+    margin: 0 0 var(--space-xl);
     padding-top: var(--space-m);
     border-top: var(--rule-width) solid var(--rule);
   }
@@ -120,6 +120,8 @@ const items = [
     gap: var(--rail-gap);
     padding: var(--space-xs) 0;
   }
+  /* Off the spacing scale on purpose: this is an optical baseline nudge
+     between Inter (the label) and Newsreader (the value), not rhythm. */
   .fact dt { padding-top: 0.15rem; }
   .fact dd { margin: 0; }
 
