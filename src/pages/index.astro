@@ -18,6 +18,9 @@ const portrait = Object.values(portraits)[0]?.default;
 const viz = (await getCollection('viz')).filter((e) => e.data.featured);
 const projects = (await getCollection('projects')).filter((e) => e.data.featured);
 
+const vizTotal = (await getCollection('viz')).length;
+const projectTotal = (await getCollection('projects')).length;
+
 const items = [
   ...viz.map((e) => ({
     href: e.data.writeup ? `/visualizations/${e.id}` : e.data.chart.src,
@@ -59,7 +62,13 @@ const items = [
     ))}
   </dl>
 
-  <h2 class="label">Selected work</h2>
+  <div class="section-head">
+    <h2 class="label">Selected work</h2>
+    <p class="more label">
+      <a href="/visualizations">All visualizations ({vizTotal})</a>
+      <a href="/data-science">Data science ({projectTotal})</a>
+    </p>
+  </div>
   <WorkList items={items} />
 </Layout>
 
@@ -114,7 +123,20 @@ const items = [
   .fact dt { padding-top: 0.15rem; }
   .fact dd { margin: 0; }
 
-  h2.label { margin: 0 0 var(--space-m); }
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-m);
+    flex-wrap: wrap;
+    /* --space-m, not --space-l: a heading belongs to the list beneath it, and
+       at --space-l it sits as far from the first row as the rows sit from
+       each other. It also keeps the first work row's summary clear of the
+       fold with room to spare rather than by 8px. */
+    margin: 0 0 var(--space-m);
+  }
+  .section-head h2 { margin: 0; }
+  .more { display: flex; gap: var(--space-m); margin: 0; }
 
   @media (max-width: 40rem) {
     .intro { grid-template-columns: 1fr; gap: 1.5rem; }
