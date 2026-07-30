@@ -51,6 +51,17 @@ const fmt = (d: Date) =>
     margin-bottom: var(--space-l);
     border-top: var(--rule-width) solid var(--rule);
   }
+  /* The separator that is already there does the work. No shadow, no scale:
+     both are the look this site was built to avoid, and there is no shadow
+     token to draw from. Mirrored on :focus-within so keyboard users get it. */
+  .worklist li:hover,
+  .worklist li:focus-within {
+    border-top-color: var(--muted);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .worklist li { transition: border-top-color 120ms ease; }
+  }
   /* Raised because at --step-1 it matched the bio paragraph above the list, so
      the line to scan and the line to read were the same size. The summary
      under each title inherits --step-0 and is two steps down from here. */
