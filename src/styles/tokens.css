@@ -27,7 +27,19 @@
   /* The left rail: dates on the home page's fact list and on the work list,
      and the thumbnail that sits above each work date. Shared so the two lists
      stay aligned — the page reads "when on the left, what on the right", and
-     that only holds if both columns are the same width. */
-  --rail: 16rem;
+     that only holds if both columns are the same width.
+
+     Fluid because a fixed 16rem takes a quarter of the content column at
+     1280px and two fifths of it at 720px. The clamp keeps the desktop value,
+     holds a floor narrow screens can live with, and scales between. */
+  --rail: clamp(7rem, 22vw, 16rem);
   --rail-gap: 2rem;
+
+  /* Spacing, doubling. Not the 1.25 type ratio: neighbouring type sizes must
+     stay distinguishable without shouting, whereas the largest gap has to be
+     obviously larger than the smallest or sections stop reading as sections. */
+  --space-s:  0.5rem;
+  --space-m:  1rem;
+  --space-l:  2rem;
+  --space-xl: 4rem;
 }
