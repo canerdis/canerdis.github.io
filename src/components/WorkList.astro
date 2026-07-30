@@ -47,11 +47,13 @@ const fmt = (d: Date) =>
     display: grid;
     grid-template-columns: var(--rail) 1fr;
     gap: var(--rail-gap);
-    padding-top: 1rem;
-    margin-bottom: 2.5rem;
+    padding-top: var(--space-m);
+    margin-bottom: var(--space-l);
     border-top: var(--rule-width) solid var(--rule);
   }
-  .worklist h3 { margin: 0 0 0.4rem; }
+  /* One step above the summary beneath it: this is the line that gets
+     scanned, and at --step-1 it matched the body text exactly. */
+  .worklist h3 { margin: 0 0 var(--space-s); font-size: var(--step-2); }
   .worklist p { margin: 0; color: var(--muted); }
 
   .rail { display: flex; flex-direction: column; gap: 0.6rem; }
