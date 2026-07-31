@@ -1,43 +1,13 @@
-# Astro Starter Kit: Minimal
+# canerdis.github.io
 
-```sh
-npm create astro@latest -- --template minimal
-```
+Portfolio site. Charts I have published, and write-ups of two data projects.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+Live at <https://canerdis.github.io>.
 
-## 🚀 Project Structure
+Built with Astro. The build ships no client-side JavaScript, so every page is
+HTML and CSS by the time it reaches the browser.
 
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
-
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
-
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
-
-Any static assets, like images, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+The rule the whole site is built on: colour is reserved for data. The interface
+is four greys, and every colour you see on a page comes from inside a chart
+image. A lint step fails the build if any other colour reaches the CSS, which is
+what stops that from quietly eroding.
