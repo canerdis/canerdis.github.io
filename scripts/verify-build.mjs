@@ -71,9 +71,33 @@ for (const f of files.filter((f) => extname(f) === '.html')) {
   }
 }
 
+// 6. Content budget: proxies for a layout constraint this script cannot
+//    measure itself. The real constraint is that the first work row's
+//    summary on the home page clears the fold at 1280x800 — these character
+//    limits exist to catch a one-line content edit (a longer bio sentence,
+//    a longer featured title) before it silently pushes that summary under
+//    the fold. The numbers were measured against the home page at the point
+//    this budget was added (2026-07-30); re-measure and update them if the
+//    layout above the work list changes deliberately.
+//
+//    Only SITE.bio is checked here. The other two limits this finding asked
+//    for — the newest featured viz/project entry's title and summary length
+//    — need `getCollection`, which lives behind the `astro:content` virtual
+//    module. That module only resolves inside Astro's Vite pipeline; this
+//    script runs as plain Node (see the shebang) and `import('astro:content')`
+//    fails here with "Only URLs with a scheme in: file, data, and node are
+//    supported". Reading the markdown frontmatter directly would mean
+//    reimplementing the schema in content.config.ts as a second loader, so
+//    that part of the check is left undone rather than duplicated.
+const { SITE } = await import('../src/config.ts');
+const BIO_LIMIT = 340;
+if (SITE.bio.length > BIO_LIMIT) {
+  failures.push(`SITE.bio: ${SITE.bio.length} chars exceeds the ${BIO_LIMIT}-char budget that keeps the first work row's summary clear of the fold at 1280x800`);
+}
+
 if (failures.length) {
   console.error(`\nverify FAILED with ${failures.length} problem(s):\n`);
   for (const f of failures) console.error(`  - ${f}`);
   process.exit(1);
 }
-console.log('verify passed: routes present, alt text complete, image budget held, zero JS, links resolve.');
+console.log('verify passed: routes present, alt text complete, image budget held, zero JS, links resolve, content budget held.');

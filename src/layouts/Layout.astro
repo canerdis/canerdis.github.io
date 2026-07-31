@@ -30,10 +30,10 @@ const { title, description = SITE.bio } = Astro.props;
 </html>
 
 <style>
-  .shell { max-width: 68rem; margin: 0 auto; padding: 2rem 1.25rem 6rem; }
+  .shell { max-width: 68rem; margin: 0 auto; padding: var(--space-l) 1.25rem 6rem; }
   nav {
     display: flex; gap: 1.5rem; align-items: baseline;
-    padding-bottom: 1.5rem; margin-bottom: 3rem;
+    padding-bottom: 1.5rem; margin-bottom: var(--space-l);
     border-bottom: var(--rule-width) solid var(--rule);
     font-family: var(--font-sans); font-size: var(--step--1);
   }

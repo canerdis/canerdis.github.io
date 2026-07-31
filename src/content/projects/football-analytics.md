@@ -14,8 +14,9 @@ featured: true
 ---
 
 A group project for the Business Analytics course at **Ulm University of Applied
-Sciences**, presented in January 2026. The brief was to take a real dataset and
-answer a question two different stakeholders would actually ask.
+Sciences** (Technische Hochschule Ulm), presented in January 2026. The brief was
+to take a real dataset and answer a question two different stakeholders would
+actually ask.
 
 We picked football because the industry has moved from subjective observation to
 budget decisions made on data, and because the [Kaggle European Soccer
