@@ -12,6 +12,7 @@ const work = await getWork();
 const latest = work
   .filter((it) => it.collection === 'viz' && it.image && it.image.height / it.image.width >= 1.1)
   .slice(0, 4);
+const projects = work.filter((it) => it.collection === 'projects');
 const [first, ...rest] = SITE.name.split(' ');
 const facts = [...SITE.facts, { k: 'Contact', v: SITE.email, href: `mailto:${SITE.email}`, wide: true }];
 const linkedin = SITE.links.find((l) => l.label === 'LinkedIn')!.href;
@@ -28,11 +29,23 @@ const linkedin = SITE.links.find((l) => l.label === 'LinkedIn')!.href;
   <Facts items={facts} delay={520} />
   <div aria-hidden="true" class="rule" data-rv="sweep" data-rv-d="460"></div>
 
+  {/* Analysis first, charts second: the projects are the depth, and the
+      page must not read as a chart portfolio alone. */}
+  <Tiles
+    items={projects}
+    heading="Data science"
+    link={{ text: 'All projects →', href: '/data-science', curtain: 'Data science' }}
+    ratio="16 / 9"
+    fit="contain"
+    cols={2}
+    delay={640}
+  />
+
   <Tiles
     items={latest}
     heading="Latest charts"
     link={{ text: 'All charts →', href: '/visualizations', curtain: 'Visualizations' }}
-    delay={640}
+    spaced
   />
 
   <WorkIndex id="work" items={work} heading="Work index" spaced />

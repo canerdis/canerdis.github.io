@@ -12,7 +12,13 @@ const { items, delay = 560 } = Astro.props;
         <dt class="mono">{f.k}</dt>
         <dd class={f.live ? 'live' : undefined}>
           {f.live && <span class="dot" aria-hidden="true" />}
-          {f.href ? <a class="ulink" href={f.href}>{f.v}</a> : f.v}
+          {/* If an address ever has to break, it breaks after the @, never
+              in the middle of a word. */}
+          {f.href ? (
+            <a class="ulink" href={f.href}>
+              {f.v.includes('@') ? <>{f.v.split('@')[0]}@<wbr />{f.v.split('@')[1]}</> : f.v}
+            </a>
+          ) : f.v}
         </dd>
       </div>
     </div>

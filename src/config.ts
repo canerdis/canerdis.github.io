@@ -6,8 +6,8 @@ export const SITE = {
   // The one sentence under the name. Kept short on purpose: the facts strip
   // below it and the experience rows further down carry the specifics.
   line:
-    'I work in pricing at MediaMarkt and make charts and written analysis ' +
-    'from public data, many of them published by Europe Magazine.',
+    'I work in pricing at MediaMarkt, build analyses and models in Python ' +
+    'and SQL, and make charts from public data for Europe Magazine.',
   // Used for <meta name="description"> and anywhere a longer bio is needed.
   bio:
     'Pricing assistant at MediaMarkt and final-year statistics student in ' +
@@ -19,7 +19,7 @@ export const SITE = {
   // it marks the one fact that is about right now. `wide` cells take the full
   // row on a phone, where two half-width cells would not fit them.
   facts: [
-    { k: 'Focus', v: 'Pricing & data analysis' },
+    { k: 'Focus', v: 'Pricing & data science' },
     { k: 'Based', v: 'Istanbul, Türkiye' },
     { k: 'Now', v: 'Pricing at MediaMarkt', live: true, wide: true },
   ],

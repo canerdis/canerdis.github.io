@@ -86,6 +86,9 @@ img { display: block; max-width: 100%; height: auto; }
 .nav { display: flex; gap: clamp(14px, 2.2cqi, 28px); }
 .nav a { padding: 16px 0; }
 .nav a.is-strong { color: var(--fg); }
+/* Four links do not fit beside the wordmark on a phone; Experience is on the
+   home page itself, so it is the one that goes. */
+@container (max-width: 600px) { .nav__wide { display: none; } }
 .bar__rule, .bar__progress {
   position: absolute; left: 0; right: 0; bottom: 0; height: 1px; transform-origin: 0 50%;
 }
@@ -116,7 +119,9 @@ img { display: block; max-width: 100%; height: auto; }
    the gaps themselves and never double up where cells meet. */
 .facts {
   margin-block: 0;
-  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
+  /* The last cell is wider: it holds the longest value (an email address,
+     a source line) and must not break it. */
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)) minmax(0, 1.45fr);
   gap: 1px; background: var(--rule);
 }
 .fact { background: var(--bg); padding: 16px var(--pad); min-width: 0; }
@@ -129,7 +134,7 @@ img { display: block; max-width: 100%; height: auto; }
   .facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .fact--wide { grid-column: 1 / -1; }
 }
-.fact dd { overflow-wrap: anywhere; }
+.fact dd { overflow-wrap: break-word; }
 .live { display: flex; align-items: center; gap: 8px; }
 .dot { flex: none; width: 6px; height: 6px; border-radius: 50%; background: var(--dot); }
 
