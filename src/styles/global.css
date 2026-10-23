@@ -153,6 +153,9 @@ img { display: block; max-width: 100%; height: auto; }
 @container (max-width: 760px) {
   .tiles { --cols-now: 2; }
   .tiles[data-fit="contain"] { --cols-now: 1; }
+  /* One wide chart per row has no neighbour to line up with, so it takes
+     its own height instead of sitting in a letterbox. */
+  .tiles[data-fit="contain"] .tile__img img { aspect-ratio: auto; }
 }
 .tile { display: flex; flex-direction: column; background: var(--bg); color: var(--fg); text-decoration: none; }
 .tile__img { display: block; overflow: hidden; background: var(--ph); }
@@ -235,6 +238,19 @@ a.row:hover .row__arrow, a.row:focus-visible .row__arrow { opacity: 1; transform
   .rows:has(a.row:hover) a.row:not(:hover) { opacity: 0.38; }
 }
 
+/* On a tablet the date cell gives some of its width to the entry. */
+@container (max-width: 860px) {
+  .row, .prose-row { --cell: 176px; }
+}
+/* On a phone the cells stack, and the type moves up onto the date line so
+   the title and summary keep the full width. Only one of the two copies is
+   ever displayed, so it is read out once. */
+.row__kind { display: none; }
+@container (max-width: 590px) {
+  .row__kind { display: inline; margin-left: auto; font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; }
+  .row__body > .row__type { display: none; }
+}
+
 /* ------------------------------------------------------------------ hover preview */
 
 .preview {
@@ -278,7 +294,7 @@ a.row:hover .row__arrow, a.row:focus-visible .row__arrow { opacity: 1; transform
 .figure figcaption .rule { position: absolute; left: 0; right: 0; top: 0; }
 
 /* Write-ups: every `##` section of the markdown arrives as a row (see
-   src/lib/rehype-rows.mjs). The label stays in view beside a long section. */
+   src/lib/rows.ts). The label stays in view beside a long section. */
 .prose-row { display: flex; flex-wrap: wrap; border-bottom: 1px solid var(--rule); }
 .prose-row__label {
   margin: 0; flex: 1 1 var(--cell); align-self: stretch;

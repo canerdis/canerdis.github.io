@@ -26,7 +26,7 @@ const total = String(items.length).padStart(2, '0');
   <div class="rows" data-preview-list>
     {items.map((it, i) => (
       <a class="row" href={it.href} data-rv="row" data-i={i} data-curtain={`${it.no} — ${it.title}`}>
-        <span class="row__meta"><span>{it.no}</span><span>{stamp(it.date)}</span></span>
+        <span class="row__meta"><span>{it.no}</span><span>{stamp(it.date)}</span><span class="row__kind">{it.type}</span></span>
         <span class="row__body">
           <span class="row__text">
             <span class="row__title">{it.title}</span>
