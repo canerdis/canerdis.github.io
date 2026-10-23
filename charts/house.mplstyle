@@ -6,29 +6,29 @@ axes.facecolor: none
 savefig.facecolor: none
 savefig.transparent: True
 
-# Never a white chart background: the site is #0F0E0C.
+# Never a white chart background: the site is #0B0D10.
 
 font.family: sans-serif
-font.sans-serif: Inter, DejaVu Sans
+font.sans-serif: Geist, Inter, DejaVu Sans
 axes.titlesize: 14
 axes.labelsize: 11
 xtick.labelsize: 10
 ytick.labelsize: 10
 
-text.color: E8E4DC
-axes.labelcolor: E8E4DC
-axes.titlecolor: E8E4DC
-xtick.color: 8A857C
-ytick.color: 8A857C
+text.color: E4E7EB
+axes.labelcolor: E4E7EB
+axes.titlecolor: E4E7EB
+xtick.color: 8A929C
+ytick.color: 8A929C
 
 # Minimal chart junk: no bounding box, no heavy grid.
 axes.spines.top: False
 axes.spines.right: False
 axes.spines.left: False
-axes.edgecolor: 2A2724
+axes.edgecolor: 1F242B
 axes.grid: True
 axes.grid.axis: y
-grid.color: 2A2724
+grid.color: 1F242B
 grid.linewidth: 0.8
 grid.alpha: 1.0
 

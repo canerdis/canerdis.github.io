@@ -36,7 +36,7 @@ def _frame(ax, title: str, xlabel: str = "", ylabel: str = "", grid_axis: str = 
     ax.set_xlabel(xlabel, color=palette.MUTED)
     ax.set_ylabel(ylabel, color=palette.MUTED)
     ax.grid(False)
-    ax.grid(axis=grid_axis, color="#2A2724", linewidth=0.8)
+    ax.grid(axis=grid_axis, color=palette.RULE, linewidth=0.8)
     ax.set_axisbelow(True)
     ax.tick_params(colors=palette.MUTED)
 
@@ -84,7 +84,7 @@ def chart_importance(src: Path, outdir: Path, top: int = 8) -> None:
     colors = [BLUE if f == "age" else palette.MUTED for f in df["feature"]]
     bars = ax.barh(df["feature"].str.replace("_", " "), df["importance"],
                    color=colors, height=0.68, xerr=df["std"],
-                   error_kw={"ecolor": "#2A2724", "elinewidth": 1})
+                   error_kw={"ecolor": palette.RULE, "elinewidth": 1})
     ax.bar_label(bars, fmt="%.4f", padding=6, fontsize=9, color=palette.FG)
     ax.set_xlim(0, df["importance"].max() * 1.22)
     _frame(ax, "Permutation importance: mean drop in ROC-AUC (5 repeats)",
@@ -131,7 +131,7 @@ def chart_tuning(src: Path, outdir: Path) -> None:
     ax.set_ylim(0.86, 0.94)
     _frame(ax, "102 extra model fits bought +0.0001 PR-AUC",
            xlabel="Wall-clock seconds (log scale)", ylabel="Holdout PR-AUC")
-    ax.grid(axis="x", color="#2A2724", linewidth=0.8)
+    ax.grid(axis="x", color=palette.RULE, linewidth=0.8)
     ax.legend(frameon=False, labelcolor=palette.FG, loc="upper left", fontsize=9)
     fig.tight_layout()
     fig.savefig(outdir / "depression-tuning.png")

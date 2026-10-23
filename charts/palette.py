@@ -1,16 +1,17 @@
 """Chart palette. These colors appear ONLY inside chart images.
 
-Site thesis: color is reserved for data. The interface is monochrome, so
-these hexes must never be added to site CSS — the design lint rejects any
-color outside the four interface tokens, and that is correct behaviour.
+Site thesis: color is reserved for data. The interface is a cool monochrome,
+so these hexes must never be added to site CSS: the design lint rejects any
+colour that is not a token in src/styles/tokens.css, and that is correct.
 """
 
 from matplotlib.colors import LinearSegmentedColormap
 
 # Site tokens, mirrored so charts match the page exactly.
-BG = "#0F0E0C"
-FG = "#E8E4DC"
-MUTED = "#8A857C"
+BG = "#0B0D10"
+FG = "#E4E7EB"
+MUTED = "#8A929C"
+RULE = "#1F242B"
 
 # Categorical palette chosen under the dataviz skill: colorblind-safe and
 # legible on BG, validated at >=3:1 contrast against the site surface.

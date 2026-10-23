@@ -69,7 +69,7 @@ def main() -> int:
     ax.set_title("Four classifiers, and the rule that needs no data at all",
                  loc="left", fontsize=13, color=palette.FG, pad=14)
     ax.grid(False)
-    ax.grid(axis="y", color="#2A2724", linewidth=0.8)
+    ax.grid(axis="y", color=palette.RULE, linewidth=0.8)
     ax.set_axisbelow(True)
     ax.tick_params(colors=palette.MUTED)
 

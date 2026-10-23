@@ -16,7 +16,7 @@ fig.savefig('src/assets/viz/my-chart.png')  # transparent bg, site fonts
 
 ## Rules
 
-- Never export a white background. The site is `#0F0E0C`.
+- Never export a white background. The site is `#0B0D10`.
 - Categorical colors come from `palette.py`. Do not invent per-chart colors.
 - Gradients ARE allowed here: a sequential colormap encoding a continuous
   variable is correct data visualization. The site's gradient ban covers

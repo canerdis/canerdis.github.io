@@ -2,7 +2,7 @@
 
 The project's own `football_analytics.py` renders these on a white background
 with navy/grey bars. That is fine in the project repo, but a white chart on a
-#0F0E0C page reads as a lightbulb. This script recomputes the same figures from
+#0B0D10 page reads as a lightbulb. This script recomputes the same figures from
 the already-derived fact table and re-renders them transparent, in house colors.
 
 Definitions are copied from `football_analytics.py` exactly — in particular
@@ -55,7 +55,7 @@ def _frame(ax, title: str, xlabel: str = "", grid_axis: str = "x") -> None:
     ax.set_xlabel(xlabel, color=palette.MUTED)
     ax.set_ylabel("")
     ax.grid(False)
-    ax.grid(axis=grid_axis, color="#2A2724", linewidth=0.8)
+    ax.grid(axis=grid_axis, color=palette.RULE, linewidth=0.8)
     ax.set_axisbelow(True)
 
 
