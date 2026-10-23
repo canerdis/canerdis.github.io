@@ -1,7 +1,19 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import Tiles from '../components/Tiles.astro';
+import { getWork } from '../lib/work';
+
+const words = ['Not', 'here'];
+const latest = (await getWork())
+  .filter((it) => it.collection === 'viz' && it.image && it.image.height / it.image.width >= 1.1)
+  .slice(0, 4);
 ---
 <Layout title="Not found">
-  <h1>Not found</h1>
-  <p>That page doesn't exist. Try the <a href="/visualizations">visualizations</a> or the <a href="/data-science">data science work</a>.</p>
+  <section class="frame page-hero page-hero--big">
+    <p class="crumb mono muted" data-rv="up" data-rv-d="150">404</p>
+    <h1>{words.map((w, i) => <span class="mask"><span data-rv="mask" data-rv-d={220 + i * 60}>{w}</span></span>)}</h1>
+    <p class="lede" data-rv="up" data-rv-d="420">That page does not exist, or it moved. The newest work is below, and everything else is on the index.</p>
+  </section>
+  <div aria-hidden="true" class="rule" data-rv="sweep" data-rv-d="300"></div>
+  <Tiles items={latest} heading="Latest charts" link={{ text: 'The index →', href: '/', curtain: 'Index' }} delay={460} />
 </Layout>

@@ -8,6 +8,7 @@ cover: ../../assets/viz/football-attributes.png
 alt: >-
   Three panels of horizontal bars showing the six attributes most correlated with
   goals and assists for defenders, midfielders and attackers.
+caption: Attribute correlation with output, by position (≥10 starts)
 tools: [Python, SQL, SQLite, pandas, matplotlib, Flourish]
 repo: https://github.com/canerdis/football-analytics
 featured: true

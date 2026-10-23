@@ -2,12 +2,17 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { findBannedPatterns, findDisallowedColors, lintCss, ALLOWED_HEXES } from './css.mjs';
 
-test('the allowlist is exactly the four tokens', () => {
-  assert.deepEqual([...ALLOWED_HEXES].sort(), ['#0f0e0c', '#2a2724', '#8a857c', '#e8e4dc']);
+// Written out on purpose: adding or changing a colour token should be a
+// decision someone makes here too, not something the lint quietly absorbs.
+test('the allowlist is exactly the eight tokens in tokens.css', () => {
+  assert.deepEqual(
+    [...ALLOWED_HEXES].sort(),
+    ['#0b0d10', '#0f1216', '#151a20', '#1f242b', '#2a3038', '#7fc0d8', '#8a929c', '#e4e7eb'],
+  );
 });
 
 test('findBannedPatterns catches gradients', () => {
-  const v = findBannedPatterns('.a{background:linear-gradient(90deg,#0f0e0c,#e8e4dc)}');
+  const v = findBannedPatterns('.a{background:linear-gradient(90deg,#0b0d10,#e4e7eb)}');
   assert.equal(v.length, 1);
   assert.equal(v[0].pattern, 'linear-gradient');
 });
@@ -33,8 +38,8 @@ test('findDisallowedColors flags off-token colors', () => {
   assert.equal(v[0].reason, 'off-token');
 });
 
-test('findDisallowedColors permits the four tokens', () => {
-  const css = '.a{color:#E8E4DC;background:#0F0E0C;border-color:#2A2724;outline-color:#8A857C}';
+test('findDisallowedColors permits the tokens', () => {
+  const css = '.a{color:#E4E7EB;background:#0B0D10;border-color:#1F242B;outline-color:#8A929C}';
   assert.deepEqual(findDisallowedColors(css), []);
 });
 
@@ -59,7 +64,7 @@ test('findDisallowedColors flags 8-digit alpha-hex purple', () => {
 });
 
 test('findDisallowedColors treats a token color with an alpha channel as allowed', () => {
-  assert.deepEqual(findDisallowedColors('.a{color:#0f0e0cff}'), []);
+  assert.deepEqual(findDisallowedColors('.a{color:#0b0d10ff}'), []);
 });
 
 test('findDisallowedColors flags 8-digit alpha-hex indigo as purple', () => {
@@ -123,7 +128,7 @@ test('findDisallowedColors flags rebeccapurple', () => {
 test('findDisallowedColors does not false-positive on a named-purple substring in an identifier', () => {
   // `.violet-box` is a selector, not a color value: "violet" is immediately
   // followed by "-", so it must not be treated as the named color violet.
-  assert.deepEqual(findDisallowedColors('.violet-box{color:#0f0e0c}'), []);
+  assert.deepEqual(findDisallowedColors('.violet-box{color:#0b0d10}'), []);
 });
 
 // --- Regression guard: the hardened scanner must still pass clean CSS. ---
@@ -131,6 +136,6 @@ test('findDisallowedColors does not false-positive on a named-purple substring i
 test('lintCss still permits keywords, var(), and the four raw tokens after hardening', () => {
   const css = '.a{color:var(--fg);background:transparent;border-color:currentColor}';
   assert.deepEqual(lintCss(css).violations, []);
-  const tokens = '.b{color:#0f0e0c;background:#e8e4dc;border-color:#8a857c;outline-color:#2a2724}';
+  const tokens = '.b{color:#0b0d10;background:#e4e7eb;border-color:#8a929c;outline-color:#1f242b}';
   assert.deepEqual(lintCss(tokens).violations, []);
 });

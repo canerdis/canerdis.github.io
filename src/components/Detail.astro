@@ -1,0 +1,97 @@
+---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import Facts from './Facts.astro';
+import type { WorkItem } from '../lib/work';
+import { toRows } from '../lib/rows';
+
+// One piece of work: the question it answers, the picture straight after it
+// (on a chart page the chart is the content), its facts, the write-up as
+// two-cell rows, then the way to the next one. `html` is the
+// write-up as the content layer rendered it (entry.rendered.html).
+interface Plate { src: ImageMetadata; alt: string }
+interface Props {
+  item: WorkItem;
+  html: string;
+  next: WorkItem;
+  facts: { k: string; v: string; href?: string }[];
+  image?: ImageMetadata;
+  alt?: string;
+  caption?: string;
+  plates?: Plate[];
+  links?: { label: string; text: string; href: string }[];
+}
+const { item, html, next, facts, image, alt, caption, plates = [], links = [] } = Astro.props;
+const words = item.title.split(' ');
+const sizes = '(max-width: 1040px) 100vw, 1040px';
+---
+<section class="frame page-hero">
+  <p class="crumb mono" data-rv="up" data-rv-d="150">
+    <a class="mlink" href="/#work" data-curtain="Index" data-scramble>← Index</a>
+    <span class="muted" aria-hidden="true">/</span>
+    <span>{item.no}</span>
+  </p>
+  <h1>
+    {words.map((w, i) => (
+      <span class="mask"><span data-rv="mask" data-rv-d={220 + i * 60}>{w}</span></span>
+    ))}
+  </h1>
+  <p class="lede" data-rv="up" data-rv-d="480">{item.line}</p>
+</section>
+
+<div aria-hidden="true" class="rule" data-rv="sweep" data-rv-d="300"></div>
+{image && alt && (
+  <figure class="frame figure">
+    <div class="figure__frame" data-rv="clip" data-rv-d="420">
+      <div data-rv="zoom" data-rv-d="420">
+        <Image src={image} alt={alt} widths={[640, 1040, 1600]} sizes={sizes} loading="eager" fetchpriority="high" />
+      </div>
+    </div>
+    <figcaption class="mono">
+      <span aria-hidden="true" class="rule" data-rv="sweep"></span>
+      <span data-rv="up" style="display:block">Fig. 1 — {caption ?? item.title}</span>
+    </figcaption>
+  </figure>
+)}
+{image && alt && <div aria-hidden="true" class="rule" data-rv="sweep" data-rv-d="560"></div>}
+<Facts items={facts} delay={640} />
+<div aria-hidden="true" class="rule" data-rv="sweep"></div>
+
+<article class="frame">
+  {toRows(html).map((r) => (
+    <section class="prose-row" data-rv="row">
+      <h2 class="prose-row__label" id={r.id}><span set:html={r.label} /></h2>
+      <div class="prose-row__body" set:html={r.html} />
+    </section>
+  ))}
+
+  {plates.length > 0 && (
+    <section class="prose-row" data-rv="row">
+      <h2 class="prose-row__label"><span>More pages</span></h2>
+      <div class="prose-row__body">
+        <div class="plates">
+          {plates.map((p, i) => (
+            <figure>
+              <div class="figure__frame" data-rv="clip">
+                <Image src={p.src} alt={p.alt} widths={[480, 960]} sizes="(max-width: 700px) 100vw, 380px" />
+              </div>
+              <figcaption class="mono">Fig. {i + 2}</figcaption>
+            </figure>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  {links.map((l) => (
+    <section class="prose-row" data-rv="row">
+      <h2 class="prose-row__label"><span>{l.label}</span></h2>
+      <div class="prose-row__body"><p><a class="ulink" href={l.href}>{l.text}</a></p></div>
+    </section>
+  ))}
+
+  <a class="row next" href={next.href} data-rv="row" data-curtain={`${next.no} — ${next.title}`}>
+    <span class="row__meta mono"><span>Next</span><span>{next.no}</span></span>
+    <span class="row__body"><span class="next__title">{next.title}<span aria-hidden="true">→</span></span></span>
+  </a>
+</article>

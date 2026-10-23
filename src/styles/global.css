@@ -1,76 +1,400 @@
 @import './fonts.css';
 @import './tokens.css';
 
+/* ------------------------------------------------------------------ base */
+
 *, *::before, *::after { box-sizing: border-box; }
+
+html {
+  background: var(--bg);
+  color-scheme: dark;
+  /* Anchored sections land below the sticky bar, not under it. */
+  scroll-padding-top: calc(var(--bar) + 8px);
+}
 
 body {
   margin: 0;
   background: var(--bg);
   color: var(--fg);
-  font-family: var(--font-serif);
-  font-size: var(--step-0);
-  line-height: 1.6;
-  /* Newsreader has real optical sizes: the display and text cuts are
-     different drawings, not one font scaled. Let the browser use them. */
-  font-optical-sizing: auto;
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.55;
   -webkit-font-smoothing: antialiased;
 }
 
-h1, h2, h3 {
-  font-family: var(--font-serif);
-  font-weight: 600;
-  line-height: 1.15;
+a { color: inherit; }
+img { display: block; max-width: 100%; height: auto; }
+:focus-visible { outline: 2px solid var(--fg); outline-offset: 3px; }
+::selection { background: var(--fg); color: var(--bg); }
+
+.skip-link { position: absolute; left: -9999px; }
+.skip-link:focus {
+  left: var(--pad); top: 12px; z-index: 60;
+  padding: 8px 14px; background: var(--fg); color: var(--bg);
+}
+
+/* ------------------------------------------------------------------ frame */
+
+/* The page is drawn on ruled paper: one centred column with full-height
+   hairlines on its left and right, crossed by full-width rules between bands.
+   The container makes `cqi` units track the page width. */
+.page { position: relative; min-height: 100vh; container-type: inline-size; overflow-x: clip; }
+.rails { position: absolute; inset: 0; z-index: 6; pointer-events: none; }
+.rails > div {
+  max-width: var(--frame); height: 100%; margin: 0 auto;
+  border-left: 1px solid var(--rule); border-right: 1px solid var(--rule);
+}
+.frame { max-width: var(--frame); margin: 0 auto; }
+.rule { height: 1px; background: var(--rule); transform-origin: 0 50%; }
+
+.mono {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
+}
+.muted { color: var(--muted); }
+
+.ulink {
+  color: var(--fg);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.25em;
+  text-decoration-color: var(--muted);
+  transition: text-decoration-color 150ms;
+}
+.ulink:hover { text-decoration-color: var(--fg); }
+
+/* A plain mono link: muted at rest, full ink under the pointer. */
+.mlink { color: var(--muted); text-decoration: none; transition: color 150ms; }
+.mlink:hover, .mlink:focus-visible { color: var(--fg); }
+
+/* ------------------------------------------------------------------ bar */
+
+.bar { position: sticky; top: 0; z-index: 5; background: var(--bg); }
+.bar__inner {
+  height: var(--bar); padding: 0 var(--pad);
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+}
+.wordmark {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 14px; font-weight: 500; letter-spacing: -0.01em; white-space: nowrap;
+  color: var(--fg); text-decoration: none;
+}
+.wordmark__mark { width: 7px; height: 7px; background: var(--fg); }
+.nav { display: flex; gap: clamp(14px, 2.2cqi, 28px); }
+.nav a { padding: 16px 0; }
+.nav a.is-strong { color: var(--fg); }
+.bar__rule, .bar__progress {
+  position: absolute; left: 0; right: 0; bottom: 0; height: 1px; transform-origin: 0 50%;
+}
+.bar__rule { background: var(--rule); }
+/* Reading progress, drawn over the bar's own rule. */
+.bar__progress { background: var(--fg); transform: scaleX(0); }
+
+/* ------------------------------------------------------------------ hero */
+
+.hero { padding: clamp(48px, 9cqi, 120px) var(--pad) clamp(32px, 5cqi, 64px); }
+.hero h1 {
+  margin: 0;
+  display: flex; flex-wrap: wrap; column-gap: 0.24em;
+  font-size: clamp(48px, 7.5cqi, 96px); line-height: 0.96; font-weight: 600; letter-spacing: -0.05em;
+}
+/* Each word rises out of its own slot. The padding keeps descenders inside
+   the mask; the negative margin gives the line height back. */
+.mask { display: block; overflow: hidden; padding-bottom: 0.08em; margin-bottom: -0.08em; }
+.mask > span { display: block; }
+.lede {
+  margin: 24px 0 0; max-width: 46ch;
+  font-size: clamp(18px, 1.6cqi, 20px); line-height: 1.45; color: var(--muted); text-wrap: pretty;
+}
+
+/* ------------------------------------------------------------------ facts */
+
+/* Cells separated by a 1px gap over a --rule ground, so the hairlines are
+   the gaps themselves and never double up where cells meet. */
+.facts {
+  margin-block: 0;
+  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1px; background: var(--rule);
+}
+.fact { background: var(--bg); padding: 16px var(--pad); min-width: 0; }
+.fact dt { margin: 0; color: var(--muted); }
+.fact dd { margin: 4px 0 0; }
+/* Four across, or two below 860px. Wide cells (an email address, a status)
+   take the whole row in two columns, which keeps every row full: an empty
+   cell would show the --rule ground through as a grey block. */
+@container (max-width: 860px) {
+  .facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .fact--wide { grid-column: 1 / -1; }
+}
+.fact dd { overflow-wrap: anywhere; }
+.live { display: flex; align-items: center; gap: 8px; }
+.dot { flex: none; width: 6px; height: 6px; border-radius: 50%; background: var(--dot); }
+
+/* ------------------------------------------------------------------ tiles */
+
+/* Work as pictures (src/components/Tiles.astro). One frame per grid, set by
+   --ratio; --cols is the column count on a wide screen. On a phone a grid
+   goes to two columns, or one for wide charts, so nothing has to scroll
+   sideways and read as cut off. --cols-now is set here rather than on --cols
+   because --cols arrives inline and would win over any rule below. */
+.tiles {
+  display: grid; grid-template-columns: repeat(var(--cols-now, var(--cols, 4)), minmax(0, 1fr));
+  gap: 1px; background: var(--rule);
+  border-bottom: 1px solid var(--rule);
+}
+@container (max-width: 760px) {
+  .tiles { --cols-now: 2; }
+  .tiles[data-fit="contain"] { --cols-now: 1; }
+}
+.tile { display: flex; flex-direction: column; background: var(--bg); color: var(--fg); text-decoration: none; }
+.tile__img { display: block; overflow: hidden; background: var(--ph); }
+.tile__img img {
+  width: 100%; aspect-ratio: var(--ratio, 4 / 5); object-fit: cover; object-position: 50% 0;
+  transition: transform 700ms var(--ease-out);
+}
+[data-fit="contain"] .tile__img img { object-fit: contain; object-position: 50% 50%; padding: clamp(10px, 2cqi, 20px); }
+.tile__cap { display: flex; flex-direction: column; gap: 4px; padding: 14px var(--pad) 20px; }
+.tile__title { font-size: 16px; font-weight: 500; line-height: 1.3; letter-spacing: -0.01em; text-wrap: balance; }
+.tile__arrow { display: inline-block; opacity: 0; transform: translateX(-6px); transition: opacity 200ms, transform 350ms var(--ease-out); }
+.tile:hover .tile__img img, .tile:focus-visible .tile__img img { transform: scale(1.04); }
+.tile:hover .tile__arrow, .tile:focus-visible .tile__arrow { opacity: 1; transform: none; }
+.tile:focus-visible { outline-offset: -3px; }
+
+/* ------------------------------------------------------------------ section heads */
+
+.shead {
+  position: relative;
+  display: flex; justify-content: space-between; align-items: baseline; gap: 16px;
+  padding: 14px var(--pad);
+}
+.shead h2 { margin: 0; font: inherit; letter-spacing: inherit; text-transform: inherit; }
+.shead__t, .shead__b { position: absolute; left: 0; right: 0; }
+.shead__t { top: 0; }
+.shead__b { bottom: 0; }
+.shead--gap { margin-top: clamp(48px, 7cqi, 96px); }
+
+/* ------------------------------------------------------------------ rows */
+
+/* The index row: a date cell on the left and the entry on the right, the two
+   divided by a hairline. Below ~660px the cells wrap and stack. */
+.row {
+  position: relative;
+  display: flex; flex-wrap: wrap;
+  border-bottom: 1px solid var(--rule);
+  color: var(--fg); text-decoration: none;
+  transition: opacity 300ms, background-color 200ms;
+}
+.row__meta {
+  flex: 1 1 var(--cell);
+  border-right: 1px solid var(--rule);
+  padding: clamp(16px, 2cqi, 24px) var(--pad) 0;
+  display: flex; gap: 16px;
+  font-family: var(--mono); font-size: 12px; line-height: 1.6;
+  color: var(--muted); font-variant-numeric: tabular-nums;
+  transition: color 200ms;
+}
+.row__body {
+  flex: 999 1 420px; min-width: 0;
+  padding: clamp(4px, 2cqi, 24px) var(--pad) clamp(16px, 2cqi, 24px);
+  display: flex; justify-content: space-between; align-items: baseline; gap: 16px;
+}
+.row__text {
+  min-width: 0; display: flex; flex-direction: column; gap: 2px;
+  transition: transform 350ms var(--ease-out);
+}
+.row__title { font-size: clamp(17px, 1.7cqi, 20px); font-weight: 500; line-height: 1.3; letter-spacing: -0.015em; text-wrap: balance; }
+.row__title--sm { font-size: 16px; letter-spacing: -0.01em; }
+/* The summaries are two or three sentences; the index shows two lines of
+   them and the page shows the rest. */
+.row__line {
+  color: var(--muted);
+  display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden;
+}
+.row__type { flex: none; display: flex; align-items: baseline; gap: 8px; color: var(--muted); }
+.row__arrow {
+  color: var(--fg); opacity: 0; transform: translateX(-8px);
+  transition: opacity 200ms, transform 350ms var(--ease-out);
+}
+
+a.row:focus-visible { outline-offset: -3px; }
+a.row:hover, a.row:focus-visible { background: var(--hov); }
+a.row:hover .row__meta, a.row:focus-visible .row__meta { color: var(--fg); }
+a.row:hover .row__text, a.row:focus-visible .row__text { transform: translateX(6px); }
+a.row:hover .row__arrow, a.row:focus-visible .row__arrow { opacity: 1; transform: none; }
+
+/* With a mouse, the rest of the index steps back from the row being read. */
+@media (hover: hover) and (pointer: fine) {
+  .rows:has(a.row:hover) a.row:not(:hover) { opacity: 0.38; }
+}
+
+/* ------------------------------------------------------------------ hover preview */
+
+.preview {
+  position: fixed; left: 0; top: 0; z-index: 20;
+  width: clamp(220px, 22vw, 300px); aspect-ratio: 4 / 3;
+  overflow: hidden; pointer-events: none;
+  background: var(--ph); border: 1px solid var(--edge);
+  clip-path: inset(50% 0 50% 0);
+  will-change: transform, clip-path;
+}
+.preview__reel {
+  height: 100%; display: flex; flex-direction: column;
+  transition: transform 520ms var(--ease-io);
+}
+.preview__reel > * { flex: none; height: 100%; }
+.preview__reel img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 20%; }
+@media not all and (hover: hover) and (pointer: fine) { .preview { display: none; } }
+
+/* ------------------------------------------------------------------ detail */
+
+.page-hero { padding: clamp(32px, 5cqi, 64px) var(--pad) clamp(32px, 4.4cqi, 56px); }
+.crumb { margin: 0; display: flex; gap: 12px; }
+.page-hero h1 {
+  margin: 20px 0 0; max-width: 22ch;
+  display: flex; flex-wrap: wrap; column-gap: 0.24em;
+  font-size: clamp(30px, 4.7cqi + 10px, 60px); line-height: 1; font-weight: 600; letter-spacing: -0.045em;
+}
+.page-hero .mask { padding-bottom: 0.1em; margin-bottom: -0.1em; }
+/* Section pages and the 404 have a one- or two-word title: it can take the
+   home page's display size and be the first screen's dominant thing. */
+.page-hero--big h1 { font-size: clamp(40px, 7.5cqi, 96px); line-height: 0.96; letter-spacing: -0.05em; }
+.page-hero .lede { margin-top: 18px; max-width: 58ch; }
+
+.figure { margin-block: 0; }
+/* Charts come in every shape — tall magazine clippings, wide three-panel
+   exports — so the frame holds each at its own ratio, capped in height, on
+   the image ground. Nothing is cropped. */
+.figure__frame { overflow: hidden; background: var(--ph); }
+.figure__frame img { width: 100%; height: auto; max-height: min(86vh, 960px); object-fit: contain; }
+.figure figcaption { position: relative; margin: 0; padding: 12px var(--pad); color: var(--muted); }
+.figure figcaption .rule { position: absolute; left: 0; right: 0; top: 0; }
+
+/* Write-ups: every `##` section of the markdown arrives as a row (see
+   src/lib/rehype-rows.mjs). The label stays in view beside a long section. */
+.prose-row { display: flex; flex-wrap: wrap; border-bottom: 1px solid var(--rule); }
+.prose-row__label {
+  margin: 0; flex: 1 1 var(--cell); align-self: stretch;
+  border-right: 1px solid var(--rule);
+  padding: clamp(20px, 2.5cqi, 32px) var(--pad) 0;
+  font-family: var(--mono); font-size: 11px; font-weight: 400; line-height: 1.6;
+  letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted);
   text-wrap: balance;
 }
-
-h1 { font-size: var(--step-4); }
-h2 { font-size: var(--step-2); }
-h3 { font-size: var(--step-1); }
-
-p { max-width: var(--measure); }
-
-/* Links are underlined, never tinted. There is no accent color. */
-a {
-  color: inherit;
-  text-decoration: underline;
-  text-underline-offset: 0.15em;
-  text-decoration-thickness: 1px;
+.prose-row__body {
+  flex: 999 1 420px; min-width: 0;
+  padding: clamp(8px, 2.5cqi, 32px) var(--pad) clamp(24px, 2.5cqi, 32px);
 }
-a:hover { text-decoration-thickness: 2px; }
-
-/* Focus rings use --fg; no separate focus color exists. */
-:focus-visible {
-  outline: 2px solid var(--fg);
-  outline-offset: 2px;
+@container (min-width: 700px) {
+  .prose-row__label > span { position: sticky; top: calc(var(--bar) + 24px); display: block; }
 }
-
-/* Small labels, dates, axis text — the machine-ish voice. */
-.label {
-  font-family: var(--font-sans);
-  font-size: var(--step--1);
-  color: var(--muted);
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  /* Tabular figures: every date and table depends on these. */
-  font-variant-numeric: tabular-nums lining-nums;
+.prose-row__body > * { max-width: 62ch; }
+.prose-row__body > :first-child { margin-top: 0; }
+.prose-row__body > :last-child { margin-bottom: 0; }
+.prose-row__body p, .prose-row__body li { font-size: 16px; line-height: 1.65; }
+.prose-row__body p { margin: 0 0 1em; text-wrap: pretty; }
+.prose-row__body ul, .prose-row__body ol { margin: 0 0 1em; padding-left: 1.2em; }
+.prose-row__body li { margin: 0 0 0.35em; }
+.prose-row__body strong { font-weight: 600; }
+.prose-row__body a { text-decoration-thickness: 1px; text-underline-offset: 0.25em; text-decoration-color: var(--muted); }
+.prose-row__body a:hover { text-decoration-color: var(--fg); }
+.prose-row__body h3 { margin: 1.6em 0 0.5em; font-size: 16px; font-weight: 600; }
+.prose-row__body blockquote { margin: 1.2em 0; padding-left: 16px; border-left: 1px solid var(--edge); color: var(--muted); }
+.prose-row__body code { font-family: var(--mono); font-size: 0.86em; }
+.prose-row__body pre { overflow-x: auto; padding: 14px 16px; background: var(--ph); }
+/* Tables carry much of the argument. `display: block` makes them their own
+   scroll container: a six-column table does not fit 390px and the page
+   itself must never scroll sideways. */
+.prose-row__body table {
+  display: block; max-width: 100%; overflow-x: auto;
+  border-collapse: collapse; margin: 1.4em 0;
+  font-size: 14px; font-variant-numeric: tabular-nums;
 }
-
-hr, .rule {
-  border: 0;
-  border-top: var(--rule-width) solid var(--rule);
-  margin: 0;
+.prose-row__body th {
+  text-align: left; white-space: nowrap; font-weight: 400;
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted);
+  padding: 0 24px 8px 0; border-bottom: 1px solid var(--edge);
 }
+/* A floor on cell width: a narrow table scrolls inside itself rather than
+   stacking a short phrase one word per line. */
+.prose-row__body td { min-width: 12ch; padding: 8px 24px 8px 0; border-bottom: 1px solid var(--rule); vertical-align: top; }
+.prose-row__body tr:last-child td { border-bottom: 0; }
 
-img { max-width: 100%; height: auto; }
+.prose-row__body > .plates { max-width: none; }
+.plates { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 16px; }
+.plates figure { margin: 0; }
+.plates .figure__frame img { max-height: 70vh; }
+.plates figcaption { padding: 8px 0 0; color: var(--muted); }
 
-.skip-link {
-  position: absolute;
-  left: -9999px;
+.next { margin-top: clamp(32px, 5cqi, 64px); border-top: 1px solid var(--rule); }
+.next .row__meta { padding-top: 24px; }
+.next__title {
+  display: inline-flex; gap: 0.4em;
+  font-size: clamp(22px, 2.5cqi, 32px); font-weight: 500; line-height: 1.15; letter-spacing: -0.025em;
+  transition: transform 400ms var(--ease-out);
 }
-.skip-link:focus {
-  left: 1rem;
-  top: 1rem;
-  background: var(--bg);
-  padding: 0.5rem 1rem;
-  z-index: 10;
+.next .row__body { padding-block: clamp(6px, 1.9cqi, 24px) clamp(24px, 3cqi, 40px); }
+.next:hover .next__title, .next:focus-visible .next__title { transform: translateX(10px); }
+
+/* ------------------------------------------------------------------ footer */
+
+.foot {
+  padding: 28px var(--pad) 48px;
+  display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 16px 32px;
+}
+.foot__name { margin: 0; font-size: 14px; font-weight: 500; }
+.foot__year { margin: 4px 0 0; }
+.foot__nav { display: flex; flex-wrap: wrap; gap: 4px 24px; }
+.foot__nav a { padding: 12px 0; }
+
+/* ------------------------------------------------------------------ page curtain */
+
+/* The page change: a panel closes from the clicked row to the whole screen,
+   names where it is going, and lifts on the next page (src/scripts/site.js). */
+.curtain {
+  position: fixed; inset: 0; z-index: 50;
+  visibility: hidden; pointer-events: none;
+  background: var(--bg); clip-path: inset(50% 0 50% 0);
+}
+.curtain__frame {
+  position: absolute; inset: 0; max-width: var(--frame); margin: 0 auto;
+  border-left: 1px solid var(--rule); border-right: 1px solid var(--rule);
+}
+.curtain__t, .curtain__b { position: absolute; left: 0; right: 0; top: 0; height: 1px; background: var(--fg); }
+.curtain__label {
+  position: absolute; inset: 0; display: grid; place-items: center; padding: 0 var(--pad);
+  color: var(--muted); opacity: 0; text-align: center;
+}
+/* Arriving after a curtain: the page starts covered so nothing flashes. */
+.curtain-in .curtain { visibility: visible; clip-path: inset(0); }
+.curtain-in .curtain__b { transform: translateY(calc(100vh - 1px)); }
+.curtain-in .curtain__label { opacity: 1; }
+.curtain-in .curtain__label:empty::after { content: var(--curtain-label, ''); }
+
+/* ------------------------------------------------------------------ motion */
+
+/* Elements marked data-rv arrive once as they enter the viewport. These
+   starting states hold only while the script is setting up (html.rv-pending);
+   the script then takes over, and if it never runs the class is dropped after
+   three seconds and everything is simply shown. */
+.rv-pending [data-rv="up"]    { opacity: 0; transform: translateY(14px); }
+.rv-pending [data-rv="fade"]  { opacity: 0; }
+.rv-pending [data-rv="mask"]  { transform: translateY(105%); }
+.rv-pending [data-rv="sweep"] { transform: scaleX(0); }
+.rv-pending [data-rv="rails"] { clip-path: inset(0 0 100% 0); }
+.rv-pending [data-rv="wipe"]  { clip-path: inset(0 100% 0 0); }
+.rv-pending [data-rv="row"]   { clip-path: inset(0 100% 0 0); transform: translateY(8px); }
+.rv-pending [data-rv="clip"]  { clip-path: inset(100% 0 0 0); }
+.rv-pending [data-rv="zoom"]  { transform: scale(1.15); }
+
+@keyframes breathe { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(0.8); } }
+
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+  .dot { animation: breathe 2.4s ease-in-out infinite; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: 0.01ms !important; animation: none !important; }
 }

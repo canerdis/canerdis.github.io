@@ -6,6 +6,9 @@ const viz = defineCollection({
   schema: ({ image }) =>
     z.object({
       title: z.string(),
+      // The type label on the work index. Defaults to "Chart" for this
+      // collection; set it when a piece is something else (a map, a model).
+      kind: z.string().default('Chart'),
       date: z.coerce.date(),
       summary: z.string(),
       chart: image(),
@@ -44,10 +47,13 @@ const projects = defineCollection({
     z
       .object({
         title: z.string(),
+        kind: z.string().default('Analysis'),
         date: z.coerce.date(),
         summary: z.string(),
         cover: image().optional(),
         alt: z.string().optional(),
+        // The cover chart's own title, shown as its caption.
+        caption: z.string().optional(),
         tools: z.array(z.string()).default([]),
         repo: z.string().url().optional(),
         featured: z.boolean().default(false),

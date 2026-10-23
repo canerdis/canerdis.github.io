@@ -1,17 +1,18 @@
 ---
-import { getCollection } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
-import WorkList from '../../components/WorkList.astro';
+import Tiles from '../../components/Tiles.astro';
+import { getWork } from '../../lib/work';
 
-const items = (await getCollection('projects'))
-  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
-  .map((e) => ({ href: `/data-science/${e.id}`, title: e.data.title, date: e.data.date, summary: e.data.summary }));
+const items = (await getWork()).filter((it) => it.collection === 'projects');
+const words = ['Data', 'science'];
 ---
-<Layout title="Data Science">
-  <h1>Data Science</h1>
-  <WorkList items={items} />
+<Layout title="Data science" description="Analysis projects with their write-ups and code.">
+  <section class="frame page-hero page-hero--big">
+    <p class="crumb mono" data-rv="up" data-rv-d="150"><a class="mlink" href="/" data-curtain="Index" data-scramble>← Index</a></p>
+    <h1>{words.map((w, i) => <span class="mask"><span data-rv="mask" data-rv-d={220 + i * 60}>{w}</span></span>)}</h1>
+    <p class="lede" data-rv="up" data-rv-d="420">Group projects from Ulm University of Applied Sciences, each with its write-up and its code.</p>
+  </section>
+  <div aria-hidden="true" class="rule" data-rv="sweep" data-rv-d="300"></div>
+  {/* The covers are wide multi-panel charts: shown whole, never cropped. */}
+  <Tiles items={items} heading="Projects" ratio="16 / 9" fit="contain" cols={2} delay={460} />
 </Layout>
-
-<style>
-  h1 { margin: 0 0 3rem; }
-</style>

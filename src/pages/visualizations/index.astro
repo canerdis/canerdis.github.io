@@ -1,44 +1,19 @@
 ---
-import { getCollection } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
-import VizCard from '../../components/VizCard.astro';
+import Tiles from '../../components/Tiles.astro';
+import { getWork } from '../../lib/work';
 
-// Featured first, then newest. Without the featured tiebreak, entries sharing a
-// date fall back to filename order and the gallery opens on whatever sorts
-// alphabetically first rather than on the strongest chart.
-const items = (await getCollection('viz')).sort((a, b) => {
-  if (a.data.featured !== b.data.featured) return a.data.featured ? -1 : 1;
-  return b.data.date.valueOf() - a.data.date.valueOf();
-});
+const items = (await getWork()).filter((it) => it.collection === 'viz');
+// Portrait clippings fill a 4:5 frame; if a wide chart is ever added, the
+// whole grid switches to showing each picture whole instead of cropping.
+const allPortrait = items.every((it) => it.image && it.image.height / it.image.width >= 1.1);
 ---
-<Layout title="Visualizations">
-  <h1>Visualizations</h1>
-  <p class="intro">
-    Charts I have made for the places I work and for myself. Most of these ran in
-    Europe Magazine, where I clean the public data and write the analysis that goes
-    with the graphic; the rest started as a question I wanted answered. They are
-    shown as they were published, frames and all.
-  </p>
-  <div class="grid">
-    {items.map((e) => (
-      <VizCard
-        href={e.data.writeup ? `/visualizations/${e.id}` : e.data.chart.src}
-        title={e.data.title}
-        summary={e.data.summary}
-        chart={e.data.chart}
-        alt={e.data.alt}
-        hasWriteup={e.data.writeup}
-        source={e.data.source}
-        published={e.data.published}
-        date={e.data.date}
-      />
-    ))}
-  </div>
+<Layout title="Visualizations" description="Charts made from public data, most of them published by Europe Magazine.">
+  <section class="frame page-hero page-hero--big">
+    <p class="crumb mono" data-rv="up" data-rv-d="150"><a class="mlink" href="/" data-curtain="Index" data-scramble>← Index</a></p>
+    <h1><span class="mask"><span data-rv="mask" data-rv-d="220">Visualizations</span></span></h1>
+    <p class="lede" data-rv="up" data-rv-d="420">Charts made from public data, most of them published by Europe Magazine. Newest first.</p>
+  </section>
+  <div aria-hidden="true" class="rule" data-rv="sweep" data-rv-d="300"></div>
+  <Tiles items={items} heading="Charts" fit={allPortrait ? 'cover' : 'contain'} delay={460} />
 </Layout>
-
-<style>
-  h1 { margin: 0 0 1rem; }
-  .intro { margin: 0 0 var(--space-xl); color: var(--muted); font-size: var(--step-1); }
-  .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-xl) var(--space-l); }
-  @media (max-width: 48rem) { .grid { grid-template-columns: 1fr; gap: var(--space-xl); } }
-</style>

@@ -1,7 +1,13 @@
-import { findColorLiterals, findFunctionalColors, findNamedPurples, isPurple } from './colors.mjs';
+import { readFileSync } from 'node:fs';
+import { findColorLiterals, findFunctionalColors, findNamedPurples, isPurple, normalizeHex } from './colors.mjs';
 
-// The four tokens from src/styles/tokens.css, normalized.
-export const ALLOWED_HEXES = ['#0f0e0c', '#e8e4dc', '#8a857c', '#2a2724'];
+// The colour tokens, read from src/styles/tokens.css so the lint and the
+// stylesheet cannot drift apart: a colour is allowed exactly when it is
+// defined there as a custom property.
+const TOKENS = new URL('../../src/styles/tokens.css', import.meta.url);
+export const ALLOWED_HEXES = [
+  ...readFileSync(TOKENS, 'utf8').matchAll(/--[\w-]+\s*:\s*(#[0-9a-fA-F]{3,8})/g),
+].map((m) => normalizeHex(m[1]));
 
 // Keywords are permitted and are not hex literals, so they never reach the
 // color check. Listed here for the reader: transparent, currentColor,
@@ -33,8 +39,9 @@ export function findDisallowedColors(css) {
   // so both are checked against the allowlist/purple test the same way.
   const hexes = [...findColorLiterals(css), ...findFunctionalColors(css)];
   for (const hex of hexes) {
-    if (ALLOWED_HEXES.includes(hex)) continue;
-    out.push({ hex, reason: isPurple(hex) ? 'purple' : 'off-token' });
+    // Purple is checked first and on its own, so not even a token can be one.
+    if (isPurple(hex)) out.push({ hex, reason: 'purple' });
+    else if (!ALLOWED_HEXES.includes(hex)) out.push({ hex, reason: 'off-token' });
   }
   // Named purples are a denylist match, not a hex conversion: they're never
   // one of the four tokens, so they're always reported as purple.
@@ -53,7 +60,7 @@ export function lintCss(css) {
     violations.push(
       reason === 'purple'
         ? `purple/violet/indigo is banned in the interface: ${hex}`
-        : `color ${hex} is not one of the four tokens (${ALLOWED_HEXES.join(', ')})`
+        : `color ${hex} is not one of the tokens in src/styles/tokens.css (${ALLOWED_HEXES.join(', ')})`
     );
   }
   return { violations };

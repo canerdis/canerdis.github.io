@@ -1,47 +1,86 @@
 ---
 import '../styles/global.css';
 import { SITE } from '../config';
-interface Props { title: string; description?: string }
+
+interface Props { title?: string; description?: string }
 const { title, description = SITE.bio } = Astro.props;
+const fullTitle = title ? `${title} — ${SITE.name}` : `${SITE.name} — pricing, charts and analysis`;
+const year = new Date().getFullYear();
 ---
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{title} — {SITE.name}</title>
+    <title>{fullTitle}</title>
     <meta name="description" content={description} />
-    <link rel="preload" href="/fonts/Newsreader-Variable.woff2" as="font" type="font/woff2" crossorigin />
+    <meta name="theme-color" content="#0B0D10" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preload" href="/fonts/Geist-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/GeistMono-latin.woff2" as="font" type="font/woff2" crossorigin />
+    {/* Runs before first paint. With motion allowed it holds the reveal
+        elements at their starting state until the module script takes over
+        (and lets go after 3s if it never does), and it covers the page when
+        the visitor arrived through the curtain, so nothing flashes. */}
+    <script is:inline>
+      (() => {
+        const d = document.documentElement;
+        if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        d.classList.add('rv-pending');
+        setTimeout(() => d.classList.remove('rv-pending'), 3000);
+        try {
+          const label = sessionStorage.getItem('curtain');
+          if (label !== null) {
+            sessionStorage.removeItem('curtain');
+            d.classList.add('curtain-in');
+            d.style.setProperty('--curtain-label', JSON.stringify(label));
+          }
+        } catch (e) {}
+      })();
+    </script>
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
-    <div class="shell">
-      <nav aria-label="Primary">
-        <a href="/">{SITE.name}</a>
-        <a href="/visualizations">Visualizations</a>
-        <a href="/data-science">Data Science</a>
-      </nav>
+    <div class="page">
+      <div class="rails" aria-hidden="true"><div data-rv="rails" data-rv-now></div></div>
+
+      <header class="bar">
+        <div class="frame bar__inner">
+          <a class="wordmark" href="/" data-rv="fade" data-rv-d="150" data-curtain="Index">
+            <span class="wordmark__mark" aria-hidden="true"></span>{SITE.name}
+          </a>
+          <nav class="nav mono" aria-label="Primary" data-rv="fade" data-rv-d="260">
+            <a class="mlink" href="/#work" data-curtain="Index" data-scramble>Work</a>
+            <a class="mlink" href="/#experience" data-curtain="Index" data-scramble>Experience</a>
+            <a class="mlink is-strong" href={`mailto:${SITE.email}`} data-scramble>Contact ↗</a>
+          </nav>
+        </div>
+        <span class="bar__rule" aria-hidden="true" data-rv="sweep" data-rv-d="80" data-rv-now></span>
+        <span class="bar__progress" aria-hidden="true" data-progress></span>
+      </header>
+
       <main id="main"><slot /></main>
-      <footer>
-        {SITE.links.map((l) => <a href={l.href}>{l.label}</a>)}
+
+      <footer class="frame foot">
+        <div data-rv="up">
+          <p class="foot__name">{SITE.name}</p>
+          <p class="foot__year mono muted">© {year}</p>
+        </div>
+        <nav class="foot__nav mono" aria-label="Elsewhere" data-rv="up">
+          {SITE.links.map((l) => <a class="mlink" href={l.href} data-scramble>{l.label} ↗</a>)}
+        </nav>
       </footer>
     </div>
+
+    <div class="curtain" aria-hidden="true" data-curtain-el>
+      <div class="curtain__frame"></div>
+      <span class="curtain__t" data-cl="t"></span>
+      <span class="curtain__b" data-cl="b"></span>
+      <span class="curtain__label mono" data-cl="l"></span>
+    </div>
+
+    <script>
+      import '../scripts/site.js';
+    </script>
   </body>
 </html>
-
-<style>
-  .shell { max-width: 68rem; margin: 0 auto; padding: var(--space-l) 1.25rem 6rem; }
-  nav {
-    display: flex; gap: 1.5rem; align-items: baseline;
-    padding-bottom: 1.5rem; margin-bottom: var(--space-l);
-    border-bottom: var(--rule-width) solid var(--rule);
-    font-family: var(--font-sans); font-size: var(--step--1);
-  }
-  nav a:first-child { margin-right: auto; font-family: var(--font-serif); font-size: var(--step-0); }
-  footer {
-    display: flex; gap: 1.5rem;
-    margin-top: 6rem; padding-top: 1.5rem;
-    border-top: var(--rule-width) solid var(--rule);
-    font-family: var(--font-sans); font-size: var(--step--1); color: var(--muted);
-  }
-</style>

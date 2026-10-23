@@ -7,16 +7,16 @@ test('contrastRatio returns 21 for black on white', () => {
 });
 
 test('contrastRatio is symmetric', () => {
-  assert.equal(contrastRatio('#e8e4dc', '#0f0e0c'), contrastRatio('#0f0e0c', '#e8e4dc'));
+  assert.equal(contrastRatio('#e4e7eb', '#0b0d10'), contrastRatio('#0b0d10', '#e4e7eb'));
 });
 
 test('text tokens pass WCAG AA on the background', () => {
   // Verified values from the spec.
-  assert.ok(contrastRatio('#e8e4dc', '#0f0e0c') >= 4.5); // ~15.22:1
-  assert.ok(contrastRatio('#8a857c', '#0f0e0c') >= 4.5); // ~5.26:1
+  assert.ok(contrastRatio('#e4e7eb', '#0b0d10') >= 4.5); // ~15.69:1
+  assert.ok(contrastRatio('#8a929c', '#0b0d10') >= 4.5); // ~6.18:1
 });
 
 test('computed ratios match the spec figures', () => {
-  assert.equal(Math.round(contrastRatio('#e8e4dc', '#0f0e0c') * 100) / 100, 15.22);
-  assert.equal(Math.round(contrastRatio('#8a857c', '#0f0e0c') * 100) / 100, 5.26);
+  assert.equal(Math.round(contrastRatio('#e4e7eb', '#0b0d10') * 100) / 100, 15.69);
+  assert.equal(Math.round(contrastRatio('#8a929c', '#0b0d10') * 100) / 100, 6.18);
 });

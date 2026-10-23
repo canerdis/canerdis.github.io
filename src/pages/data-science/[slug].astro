@@ -1,8 +1,8 @@
 ---
-import { getCollection, render } from 'astro:content';
+import { getCollection } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
-import Prose from '../../components/Prose.astro';
-import Figure from '../../components/Figure.astro';
+import Detail from '../../components/Detail.astro';
+import { getWork, nextOf, stamp } from '../../lib/work';
 
 export async function getStaticPaths() {
   const entries = await getCollection('projects');
@@ -10,24 +10,18 @@ export async function getStaticPaths() {
 }
 
 const { entry } = Astro.props;
-const { Content } = await render(entry);
-const fmt = (d: Date) =>
-  d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }).toUpperCase();
----
-<Layout title={entry.data.title} description={entry.data.summary}>
-  <article>
-    <time class="label" datetime={entry.data.date.toISOString()}>{fmt(entry.data.date)}</time>
-    <h1>{entry.data.title}</h1>
-    <p class="summary">{entry.data.summary}</p>
-    {entry.data.cover && entry.data.alt && <Figure chart={entry.data.cover} alt={entry.data.alt} />}
-    <Prose><Content /></Prose>
-    {entry.data.tools.length > 0 && <p class="label">Tools: {entry.data.tools.join(', ')}</p>}
-    {entry.data.repo && <p><a href={entry.data.repo}>View the code</a></p>}
-  </article>
-</Layout>
+const work = await getWork();
+const item = work.find((it) => it.id === entry.id && it.collection === 'projects')!;
+const d = entry.data;
 
-<style>
-  h1 { margin: 0.5rem 0 1rem; }
-  .summary { color: var(--muted); font-size: var(--step-1); max-width: var(--measure); }
-  article > .label { margin-top: 3rem; display: block; }
-</style>
+const facts = [
+  { k: 'Type', v: d.kind },
+  { k: 'Date', v: stamp(d.date, true) },
+  { k: 'Tools', v: d.tools.join(', ') || '—' },
+  d.repo ? { k: 'Code', v: 'GitHub ↗', href: d.repo } : { k: 'Code', v: '—' },
+];
+const links = d.repo ? [{ label: 'Code', text: 'The repository on GitHub ↗', href: d.repo }] : [];
+---
+<Layout title={d.title} description={d.summary}>
+  <Detail item={item} html={entry.rendered?.html ?? ''} next={nextOf(work, item.id)} facts={facts} image={d.cover} alt={d.alt} caption={d.caption ?? d.title} links={links} />
+</Layout>

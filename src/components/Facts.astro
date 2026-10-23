@@ -1,0 +1,20 @@
+---
+// A strip of labelled cells — the page's at-a-glance facts. `delay` is where
+// the strip's load sequence starts, in ms; the cells follow 60-70ms apart.
+interface Fact { k: string; v: string; href?: string; live?: boolean; wide?: boolean }
+interface Props { items: readonly Fact[]; delay?: number }
+const { items, delay = 560 } = Astro.props;
+---
+<dl class="facts frame" data-rv="wipe" data-rv-d={delay}>
+  {items.map((f, i) => (
+    <div class={f.wide ? 'fact fact--wide' : 'fact'}>
+      <div data-rv="up" data-rv-d={delay + 100 + i * 70}>
+        <dt class="mono">{f.k}</dt>
+        <dd class={f.live ? 'live' : undefined}>
+          {f.live && <span class="dot" aria-hidden="true" />}
+          {f.href ? <a class="ulink" href={f.href}>{f.v}</a> : f.v}
+        </dd>
+      </div>
+    </div>
+  ))}
+</dl>

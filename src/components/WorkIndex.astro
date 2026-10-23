@@ -1,0 +1,47 @@
+---
+import { getImage } from 'astro:assets';
+import { stamp, type WorkItem } from '../lib/work';
+
+// The index: one row per piece of work, newest first. With a mouse, a small
+// picture of the row under the pointer follows it down the list.
+// `spaced` opens the section with a gap and a rule, for when something
+// sits directly above it.
+interface Props { items: WorkItem[]; heading: string; id?: string; delay?: number; spaced?: boolean }
+const { items, heading, id, delay, spaced = false } = Astro.props;
+
+const thumbs = await Promise.all(
+  items.map(async (it) => (it.image ? (await getImage({ src: it.image, width: 600, format: 'webp' })).src : null)),
+);
+const total = String(items.length).padStart(2, '0');
+---
+<section id={id} class="frame">
+  <div class:list={['shead mono', spaced && 'shead--gap']}>
+    {spaced && <span aria-hidden="true" class="rule shead__t" data-rv="sweep"></span>}
+    <h2 data-rv="up" data-rv-d={delay}>{heading}</h2>
+    <span class="muted" data-rv="up" data-rv-d={delay != null ? delay + 60 : undefined}>
+      <span data-count={items.length}>{total}</span> entries
+    </span>
+    <span aria-hidden="true" class="rule shead__b" data-rv="sweep" data-rv-d={delay != null ? delay - 60 : undefined}></span>
+  </div>
+  <div class="rows" data-preview-list>
+    {items.map((it, i) => (
+      <a class="row" href={it.href} data-rv="row" data-i={i} data-curtain={`${it.no} — ${it.title}`}>
+        <span class="row__meta"><span>{it.no}</span><span>{stamp(it.date)}</span></span>
+        <span class="row__body">
+          <span class="row__text">
+            <span class="row__title">{it.title}</span>
+            <span class="row__line">{it.line}</span>
+          </span>
+          <span class="row__type mono">{it.type}<span class="row__arrow" aria-hidden="true">→</span></span>
+        </span>
+      </a>
+    ))}
+  </div>
+  <div class="preview" aria-hidden="true" data-preview>
+    <div class="preview__reel" data-reel>
+      {thumbs.map((src) => (
+        <div>{src && <img data-src={src} alt="" aria-hidden="true" decoding="async" />}</div>
+      ))}
+    </div>
+  </div>
+</section>

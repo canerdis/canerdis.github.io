@@ -1,46 +1,30 @@
-/* The ONLY colors permitted in the interface.
-   Thesis: color is reserved for data. All color on this site comes from
-   inside chart images. Nothing here is decorative.
-   Verified contrast on --bg: --fg 15.22:1, --muted 5.26:1 (both pass WCAG AA).
-   --rule is 1.30:1 by design: it is a decorative hairline, not text or a
-   UI control, so the 4.5:1 text threshold does not apply to it. */
+/* The only colours permitted in the interface. `npm run lint:design` fails the
+   build on any other.
+
+   The interface is a cool monochrome. Colour on this site comes from inside
+   the charts; the single exception is --dot, the breathing status dot, which
+   marks the one fact on the page that is about right now.
+
+   Contrast on --bg: --fg 15.7:1, --muted 6.2:1 (6.0:1 on --hov). --rule, --ph, --hov and --edge
+   are surfaces and hairlines, not text, so the 4.5:1 threshold does not apply. */
 :root {
-  --bg:    #0F0E0C; /* warm near-black; pure #000 is a tell */
-  --fg:    #E8E4DC; /* warm off-white; pure #fff is a tell */
-  --muted: #8A857C; /* dates, labels, captions */
-  --rule:  #2A2724; /* hairlines — the only separator on the site */
+  --bg:    #0B0D10; /* near-black with a cold cast */
+  --fg:    #E4E7EB; /* text */
+  --muted: #8A929C; /* secondary text, labels, dates */
+  --rule:  #1F242B; /* hairlines: the grid the page is drawn on */
+  --ph:    #151A20; /* image ground: what a picture sits on before it loads */
+  --hov:   #0F1216; /* a row under the pointer */
+  --edge:  #2A3038; /* the outline of the floating preview */
+  --dot:   #7FC0D8; /* the status dot, nothing else */
 
-  --font-serif: 'Newsreader', Georgia, serif;
-  --font-sans:  'Inter', system-ui, sans-serif;
+  --sans: 'Geist', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --mono: 'Geist Mono', ui-monospace, 'Cascadia Mono', Consolas, monospace;
 
-  /* Type scale, ratio 1.25 (major third) from a 1rem base. */
-  --step--1: 0.8rem;
-  --step-0:  1rem;
-  --step-1:  1.25rem;
-  --step-2:  1.563rem;
-  --step-3:  1.953rem;
-  --step-4:  2.441rem;
+  --frame: 1040px;
+  --pad: clamp(20px, 3.1vw, 40px);
+  --bar: 52px;
+  --cell: 240px;
 
-  --measure: 65ch;
-  --rule-width: 1px;
-
-  /* The left rail: dates on the home page's fact list and on the work list,
-     and the thumbnail that sits above each work date. Shared so the two lists
-     stay aligned — the page reads "when on the left, what on the right", and
-     that only holds if both columns are the same width.
-
-     Fluid because a fixed 16rem takes a quarter of the content column at
-     1280px and two fifths of it at 720px. The clamp keeps the desktop value,
-     holds a floor narrow screens can live with, and scales between. */
-  --rail: clamp(7rem, 22vw, 16rem);
-  --rail-gap: 2rem;
-
-  /* Spacing, doubling. Not the 1.25 type ratio: neighbouring type sizes must
-     stay distinguishable without shouting, whereas the largest gap has to be
-     obviously larger than the smallest or sections stop reading as sections. */
-  --space-xs: 0.25rem;
-  --space-s:  0.5rem;
-  --space-m:  1rem;
-  --space-l:  2rem;
-  --space-xl: 4rem;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-io:  cubic-bezier(0.7, 0, 0.2, 1);
 }

@@ -9,6 +9,8 @@ alt: >-
   Grouped bar chart of accuracy and sensitivity for four classifiers and a
   majority-class baseline. The baseline reaches 100 percent sensitivity at 58.6
   percent accuracy.
+kind: Model
+caption: Four classifiers, and the rule that needs no data at all
 tools: [Python, scikit-learn, pandas, scikit-optimize]
 repo: https://github.com/canerdis/depression-prediction
 featured: true

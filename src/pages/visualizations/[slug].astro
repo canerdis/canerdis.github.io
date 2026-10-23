@@ -1,43 +1,30 @@
 ---
-import { getCollection, render } from 'astro:content';
+import { getCollection } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
-import Figure from '../../components/Figure.astro';
-import Prose from '../../components/Prose.astro';
+import Detail from '../../components/Detail.astro';
+import { getWork, nextOf, stamp } from '../../lib/work';
 
 export async function getStaticPaths() {
-  // Only entries with writeup: true get a page. This is the rule that
-  // prevents thin one-paragraph stubs.
+  // Only entries with writeup: true get a page, so nothing acquires a thin
+  // one-paragraph stub.
   const entries = (await getCollection('viz')).filter((e) => e.data.writeup);
   return entries.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
 }
 
 const { entry } = Astro.props;
-const { Content } = await render(entry);
-const fmt = (d: Date) =>
-  d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }).toUpperCase();
----
-<Layout title={entry.data.title} description={entry.data.summary}>
-  <article>
-    <time class="label" datetime={entry.data.date.toISOString()}>{fmt(entry.data.date)}</time>
-    <h1>{entry.data.title}</h1>
-    <p class="summary">{entry.data.summary}</p>
-    <Figure chart={entry.data.chart} alt={entry.data.alt} source={entry.data.source} published={entry.data.published} />
-    <Prose><Content /></Prose>
-    {/* Carousel pages 2 and 3 — the argument continues past the first image. */}
-    {entry.data.gallery.map((img, i) => (
-      <Figure chart={img} alt={entry.data.galleryAlt[i]} published={entry.data.published} />
-    ))}
-    {entry.data.tools.length > 0 && <p class="label">Tools: {entry.data.tools.join(', ')}</p>}
-    {entry.data.instagram && (
-      <p class="label">
-        Originally published: <a href={entry.data.instagram}>view the post on Instagram</a>
-      </p>
-    )}
-  </article>
-</Layout>
+const work = await getWork();
+const item = work.find((it) => it.id === entry.id && it.collection === 'viz')!;
+const d = entry.data;
 
-<style>
-  h1 { margin: 0.5rem 0 1rem; }
-  .summary { color: var(--muted); font-size: var(--step-1); max-width: var(--measure); }
-  article > .label { margin-top: 3rem; display: block; }
-</style>
+const facts = [
+  { k: 'Type', v: d.kind },
+  { k: 'Date', v: stamp(d.date, true) },
+  { k: 'Tools', v: d.tools.join(', ') || '—' },
+  { k: 'Source', v: d.source ?? '—' },
+];
+const plates = d.gallery.map((src, i) => ({ src, alt: d.galleryAlt[i] }));
+const links = d.instagram ? [{ label: 'Published', text: 'The original post on Instagram ↗', href: d.instagram }] : [];
+---
+<Layout title={d.title} description={d.summary}>
+  <Detail item={item} html={entry.rendered?.html ?? ''} next={nextOf(work, item.id)} facts={facts} image={d.chart} alt={d.alt} caption={d.source} plates={plates} links={links} />
+</Layout>
