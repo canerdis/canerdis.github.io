@@ -3,11 +3,11 @@
 // deliberately absent: it does not belong on a public page.
 export const SITE = {
   name: 'Caner Diş',
-  // The one sentence under the name. Kept short on purpose: the facts strip
-  // below it and the experience rows further down carry the specifics.
+  // The one sentence under the name. Kept short on purpose: the tools line
+  // under it and the facts strip below carry the specifics.
   line:
-    'I work in pricing at MediaMarkt, build analyses and models in Python ' +
-    'and SQL, and make charts from public data for Europe Magazine.',
+    'I work in pricing at MediaMarkt, build analyses and models, and make ' +
+    'charts from public data for Europe Magazine.',
   // Used for <meta name="description"> and anywhere a longer bio is needed.
   bio:
     'Pricing assistant at MediaMarkt and final-year statistics student in ' +
@@ -23,15 +23,7 @@ export const SITE = {
     { k: 'Based', v: 'Istanbul, Türkiye' },
     { k: 'Now', v: 'Pricing at MediaMarkt', live: true, wide: true },
   ],
-  // Reverse-chronological, matching the CV.
-  experience: [
-    { when: '2026 —', what: 'Pricing assistant', where: 'MediaMarkt' },
-    { when: '2025 —', what: 'Data analyst', where: 'Europe Magazine' },
-    { when: '2025–26', what: 'Exchange student, Computer Science', where: 'Ulm University of Applied Sciences' },
-    { when: '2025', what: 'Student assistant, Research and Application Centres Office', where: 'Mimar Sinan Fine Arts University' },
-    { when: '2024–25', what: 'Market research analyst', where: 'Cybele' },
-    { when: '2023 —', what: 'BSc Statistics', where: 'Mimar Sinan Fine Arts University' },
-  ],
+  // Shown under the sentence above, as part of the description.
   tools: 'Python, SQL, R · Power BI, Tableau, Flourish',
   links: [
     { label: 'Email', href: 'mailto:canerdis2004@gmail.com' },

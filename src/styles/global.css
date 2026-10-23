@@ -83,12 +83,27 @@ img { display: block; max-width: 100%; height: auto; }
   color: var(--fg); text-decoration: none;
 }
 .wordmark__mark { width: 7px; height: 7px; background: var(--fg); }
-.nav { display: flex; gap: clamp(14px, 2.2cqi, 28px); }
+.nav { display: flex; align-items: center; gap: clamp(14px, 2.2cqi, 28px); }
 .nav a { padding: 16px 0; }
 .nav a.is-strong { color: var(--fg); }
-/* Four links do not fit beside the wordmark on a phone; Experience is on the
-   home page itself, so it is the one that goes. */
-@container (max-width: 600px) { .nav__wide { display: none; } }
+/* The one boxed control in the bar: the LinkedIn profile, which is what most
+   visitors look for first. Square like everything else, on the image ground,
+   its edge brightening under the pointer. */
+.nav .bar__btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  height: 32px; padding: 0 12px;
+  border: 1px solid var(--edge); background: var(--ph); color: var(--fg);
+  text-decoration: none; transition: border-color 150ms, background-color 150ms;
+}
+.nav .bar__btn:hover, .nav .bar__btn:focus-visible { border-color: var(--muted); background: var(--hov); }
+.bar__btn svg { flex: none; }
+/* Not everything fits beside the wordmark on a phone. Charts goes (the home
+   page leads to them twice) and the LinkedIn button keeps only its mark. */
+@container (max-width: 600px) {
+  .nav__wide { display: none; }
+  .nav .bar__btn { padding: 0 9px; }
+  .bar__btn-label { display: none; }
+}
 .bar__rule, .bar__progress {
   position: absolute; left: 0; right: 0; bottom: 0; height: 1px; transform-origin: 0 50%;
 }
@@ -112,6 +127,8 @@ img { display: block; max-width: 100%; height: auto; }
   margin: 24px 0 0; max-width: 46ch;
   font-size: clamp(18px, 1.6cqi, 20px); line-height: 1.45; color: var(--muted); text-wrap: pretty;
 }
+/* The tools, as part of the description: metadata, so mono. */
+.hero__tools { margin: 20px 0 0; line-height: 1.6; }
 
 /* ------------------------------------------------------------------ facts */
 

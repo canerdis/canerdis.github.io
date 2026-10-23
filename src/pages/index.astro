@@ -15,7 +15,6 @@ const latest = work
 const projects = work.filter((it) => it.collection === 'projects');
 const [first, ...rest] = SITE.name.split(' ');
 const facts = [...SITE.facts, { k: 'Contact', v: SITE.email, href: `mailto:${SITE.email}`, wide: true }];
-const linkedin = SITE.links.find((l) => l.label === 'LinkedIn')!.href;
 ---
 <Layout>
   <section class="frame hero">
@@ -24,6 +23,7 @@ const linkedin = SITE.links.find((l) => l.label === 'LinkedIn')!.href;
       <span class="mask"><span data-rv="mask" data-rv-d="340">{rest.join(' ')}</span></span>
     </h1>
     <p class="lede" data-rv="up" data-rv-d="480">{SITE.line}</p>
+    <p class="hero__tools mono muted" data-rv="up" data-rv-d="560">{SITE.tools}</p>
   </section>
   <div aria-hidden="true" class="rule" data-rv="sweep" data-rv-d="220"></div>
   <Facts items={facts} delay={520} />
@@ -50,28 +50,5 @@ const linkedin = SITE.links.find((l) => l.label === 'LinkedIn')!.href;
 
   <WorkIndex id="work" items={work} heading="Work index" spaced />
 
-  <section id="experience" class="frame">
-    <div class="shead shead--gap mono">
-      <span aria-hidden="true" class="rule shead__t" data-rv="sweep"></span>
-      <h2 data-rv="up">Experience</h2>
-      <a class="mlink" href={linkedin} data-rv="up" data-scramble>LinkedIn ↗</a>
-      <span aria-hidden="true" class="rule shead__b" data-rv="sweep"></span>
-    </div>
-    {SITE.experience.map((x) => (
-      <div class="row" data-rv="row">
-        <span class="row__meta">{x.when}</span>
-        <span class="row__body">
-          <span class="row__text">
-            <span class="row__title row__title--sm">{x.what}</span>
-            <span class="row__line">{x.where}</span>
-          </span>
-        </span>
-      </div>
-    ))}
-    <p class="tools mono muted" data-rv="up">{SITE.tools}</p>
-  </section>
 </Layout>
 
-<style>
-  .tools { margin: 0; padding: 16px var(--pad); border-bottom: 1px solid var(--rule); }
-</style>
