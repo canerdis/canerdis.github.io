@@ -6,15 +6,19 @@
   "facts": [
     {
       "k": "Focus",
-      "v": "Pricing & data science"
+      "v": "Pricing & Data science",
+      "live": false,
+      "wide": false
     },
     {
       "k": "Based",
-      "v": "Istanbul, Türkiye"
+      "v": "Istanbul, Türkiye",
+      "live": false,
+      "wide": false
     },
     {
       "k": "Now",
-      "v": "Pricing at MediaMarkt",
+      "v": "Pricing Assistant at MediaMarkt",
       "live": true,
       "wide": true
     }
