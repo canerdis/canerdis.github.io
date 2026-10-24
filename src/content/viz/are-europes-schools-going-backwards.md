@@ -1,6 +1,6 @@
 ---
 title: Are Europe's schools going backwards?
-date: 2026-10-24
+date: 2026-09-14
 summary: PISA scores of 15-year-olds in 2006 and 2025 across 32 European
   systems. 82 of 96 scores fell; Finland dropped furthest, while Türkiye rose
   the most in science and mathematics.
