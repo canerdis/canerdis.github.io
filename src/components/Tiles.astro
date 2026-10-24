@@ -41,7 +41,7 @@ const sizes = `(max-width: 760px) 50vw, ${Math.round(1040 / cols)}px`;
       <a class="tile" href={it.href} data-curtain={`${it.no} · ${it.title}`}>
         <span class="tile__img" data-rv="clip" data-rv-d={at(120 + i * 90)}>
           {it.image && (
-            <Image src={it.image} alt="" aria-hidden="true" widths={[360, 720]} sizes={sizes} />
+            <Image src={it.image} alt="" aria-hidden="true" width={Math.min(720, it.image.width)} widths={[360, 720]} sizes={sizes} />
           )}
         </span>
         <span class="tile__cap" data-rv="up" data-rv-d={at(260 + i * 90)}>

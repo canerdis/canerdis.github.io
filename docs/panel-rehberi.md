@@ -41,8 +41,8 @@ Aynı sayfada:
   değil; ikisi çelişirse grafikteki kazanır.
 - **Tarih**: yayımlandığı gün. Liste en yeniden eskiye sıralanır.
 - **Özet**: bir iki cümle. Listede ve paylaşım önizlemesinde görünür.
-- **Görsel**: sürükle bırak. 1200–1600 piksel genişlik yeterli; çok büyük
-  dosyalar boyut kontrolüne takılabilir.
+- **Görsel**: sürükle bırak. Instagram'dan indirdiğin 2160 piksellik dosyayı
+  olduğu gibi yükleyebilirsin; site sayfada gösterilen boyutları kendisi küçültür.
 - **Görselin açıklaması**: görmeyen biri için grafik ne gösteriyor. Zorunlu.
 - **Kaynak**: örn. `Eurostat · Europe Magazine`.
 - **Araçlar**: her araç ayrı satır (Python, Flourish…).
