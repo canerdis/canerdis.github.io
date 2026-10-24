@@ -14,7 +14,7 @@ media:
 
 settings:
   content:
-    # Keep any field this file does not list (featured, published) as it is.
+    # Keep any field this file does not list (featured) as it is.
     merge: true
 
 content:
@@ -113,6 +113,11 @@ content:
         description: Yayımlandığı paylaşımın linki (https://...).
         type: string
         pattern: { regex: "^$|^https?://", message: "https:// ile başlayan bir link olmalı" }
+      - name: published
+        label: Başka yerde yayımlandı (çerçeveli göster)
+        description: Europe Magazine ya da LinkedIn'de kendi başlığı ve logosuyla yayımlanmış bir görselse açık bırak; ince bir çerçeveyle kupür gibi görünür. Bu site için çizilmiş bir grafikse kapat.
+        type: boolean
+        default: true
       - name: writeup
         label: Yazı sayfası olsun
         description: Kapalıysa kutu doğrudan görsele gider ve aşağıdaki yazı kullanılmaz.

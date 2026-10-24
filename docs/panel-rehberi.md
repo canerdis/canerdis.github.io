@@ -47,6 +47,11 @@ Aynı sayfada:
 - **Kaynak**: örn. `Eurostat · Europe Magazine`.
 - **Araçlar**: her araç ayrı satır (Python, Flourish…).
 - **Instagram linki**: yayımlandığı paylaşım. Boş bırakılabilir.
+- **Başka yerde yayımlandı (çerçeveli göster)**: varsayılan olarak açık.
+  Europe Magazine ya da LinkedIn'de kendi başlığı ve logosuyla yayımlanmış
+  görseller için açık bırak; görsel ince bir çerçeveyle kupür gibi görünür,
+  diğer Europe Magazine chartlarıyla aynı. Bu site için `charts/` stiliyle
+  çizilmiş bir grafikse kapat.
 - **Yazı sayfası olsun**: açıksa chart'ın kendi sayfası olur ve aşağıdaki yazı
   orada görünür. Kapalıysa kutu doğrudan görsele gider.
 - **Ek sayfalar**: paylaşım carousel ise 2. ve sonraki sayfalar, her biri kendi
