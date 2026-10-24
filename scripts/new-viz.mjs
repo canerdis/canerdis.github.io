@@ -116,8 +116,10 @@ const front = [
   ...(opts.published ? ['published: true'] : []),
   ...(opts.link ? [`instagram: ${opts.link}`] : []),
   ...(galleryNames.length
-    ? ['gallery:', ...galleryNames.map((n) => `  - ../../assets/viz/${n}`),
-       'galleryAlt:', ...galleryAlts.map((a) => `  - ${yaml(a).replace('>-\n  ', '>-\n    ')}`)]
+    ? ['gallery:', ...galleryNames.flatMap((n, i) => [
+        `  - image: ../../assets/viz/${n}`,
+        `    alt: ${yaml(galleryAlts[i]).replace('>-\n  ', '>-\n      ')}`,
+      ])]
     : []),
   '---',
   '',

@@ -28,16 +28,12 @@ const viz = defineCollection({
       published: z.boolean().default(false),
       // Where the piece originally ran. Shown on the detail page, because the
       // post carries the byline and is the evidence the work is published.
-      instagram: z.string().url().optional(),
+      // An emptied field arrives as '' from some editors; treat it as absent.
+      instagram: z.string().url().optional().or(z.literal('')),
       // Further images from the same post. These pieces ran as carousels, so a
-      // single `chart` would silently drop pages 2 and 3 of the argument.
-      gallery: z.array(image()).default([]),
-      galleryAlt: z.array(z.string()).default([]),
-    })
-    // Every extra image needs its own alt text, same rule as `chart`.
-    .refine((d) => d.gallery.length === d.galleryAlt.length, {
-      message: 'galleryAlt must have one entry per gallery image',
-      path: ['galleryAlt'],
+      // single `chart` would silently drop pages 2 and 3 of the argument. Each
+      // page carries its own alt text, same rule as `chart`.
+      gallery: z.array(z.object({ image: image(), alt: z.string().min(1) })).default([]),
     }),
 });
 
@@ -55,7 +51,7 @@ const projects = defineCollection({
         // The cover chart's own title, shown as its caption.
         caption: z.string().optional(),
         tools: z.array(z.string()).default([]),
-        repo: z.string().url().optional(),
+        repo: z.string().url().optional().or(z.literal('')),
         featured: z.boolean().default(false),
       })
       // Conditionally required: optional with no cover, mandatory with one.

@@ -1,0 +1,186 @@
+# Pages CMS (https://pagescms.org): the editing panel for this site.
+# Sign in at https://app.pagescms.org with GitHub and open this repository.
+# Saving commits to the branch; the deploy workflow rebuilds the site and runs
+# every check, so an entry that breaks a rule never reaches the live site.
+
+media:
+  # Images live in src/assets/viz so Astro can resize and convert them. The
+  # entries sit two folders down (src/content/<collection>/), so the path
+  # written into them is relative to that, exactly as the schema expects.
+  input: src/assets/viz
+  output: ../../assets/viz
+  extensions: [png, jpg, jpeg, webp, svg]
+  rename: safe
+
+settings:
+  content:
+    # Keep any field this file does not list (featured, published) as it is.
+    merge: true
+
+content:
+  - name: site
+    label: Hakkında ve bilgiler
+    type: file
+    path: src/data/site.json
+    format: json
+    fields:
+      - name: name
+        label: İsim
+        type: string
+        required: true
+      - name: line
+        label: Hakkında
+        description: İsminin altındaki paragraf. Google'da ve paylaşılan linklerde de bu görünür. En fazla 300 karakter.
+        type: text
+        required: true
+        options: { maxlength: 300 }
+      - name: tools
+        label: Araçlar
+        description: Hakkında paragrafının altındaki satır, örn. "Python, SQL, R · Power BI, Tableau, Flourish".
+        type: string
+      - name: facts
+        label: Bilgi şeridi
+        description: Hakkında'nın altındaki kutular. "Contact" kutusu e-postadan otomatik eklenir.
+        type: object
+        list: true
+        fields:
+          - { name: k, label: Başlık, type: string, required: true }
+          - { name: v, label: Değer, type: string, required: true }
+          - { name: live, label: "Şu an (yanında nokta yanar)", type: boolean }
+          - { name: wide, label: Telefonda tam genişlik, type: boolean }
+      - name: email
+        label: E-posta
+        type: string
+        required: true
+      - name: linkedin
+        label: LinkedIn
+        type: string
+        required: true
+      - name: github
+        label: GitHub
+        type: string
+        required: true
+
+  - name: viz
+    label: Chartlar
+    type: collection
+    path: src/content/viz
+    filename: "{primary}.md"
+    view:
+      fields: [title, date]
+      primary: title
+      sort: [date, title]
+      default: { sort: date, order: desc }
+    fields:
+      - name: title
+        label: Başlık
+        description: Grafiğin üstünde yazan kendi başlığı.
+        type: string
+        required: true
+      - name: date
+        label: Tarih
+        type: date
+        required: true
+      - name: summary
+        label: Özet
+        description: Listede ve paylaşım önizlemesinde görünen bir iki cümle.
+        type: text
+        required: true
+      - name: chart
+        label: Görsel
+        type: image
+        required: true
+      - name: alt
+        label: Görselin açıklaması (alt text)
+        description: Görmeyen biri için grafik ne gösteriyor. Zorunlu.
+        type: text
+        required: true
+      - name: source
+        label: Kaynak
+        description: örn. "Eurostat · Europe Magazine"
+        type: string
+      - name: tools
+        label: Araçlar
+        type: string
+        list: true
+      - name: kind
+        label: Tür
+        description: Listede görünen etiket. Boş bırakılırsa "Chart".
+        type: string
+        default: Chart
+      - name: instagram
+        label: Instagram linki
+        description: Yayımlandığı paylaşımın linki (https://...).
+        type: string
+        pattern: { regex: "^$|^https?://", message: "https:// ile başlayan bir link olmalı" }
+      - name: writeup
+        label: Yazı sayfası olsun
+        description: Kapalıysa kutu doğrudan görsele gider ve aşağıdaki yazı kullanılmaz.
+        type: boolean
+        default: true
+      - name: gallery
+        label: Ek sayfalar (carousel)
+        description: Paylaşım birden fazla sayfaysa 2. ve sonraki sayfalar.
+        type: object
+        list: true
+        fields:
+          - { name: image, label: Görsel, type: image, required: true }
+          - { name: alt, label: Açıklama (alt text), type: text, required: true }
+      - name: body
+        label: Yazı
+        description: Markdown. Her "## Başlık" sayfada yeni bir satır açar.
+        type: code
+        options: { format: markdown }
+
+  - name: projects
+    label: Data science projeleri
+    type: collection
+    path: src/content/projects
+    filename: "{primary}.md"
+    view:
+      fields: [title, date]
+      primary: title
+      sort: [date, title]
+      default: { sort: date, order: desc }
+    fields:
+      - name: title
+        label: Başlık
+        type: string
+        required: true
+      - name: date
+        label: Tarih
+        type: date
+        required: true
+      - name: summary
+        label: Özet
+        type: text
+        required: true
+      - name: kind
+        label: Tür
+        description: örn. Analysis, Model. Boş bırakılırsa "Analysis".
+        type: string
+        default: Analysis
+      - name: cover
+        label: Kapak görseli
+        type: image
+      - name: alt
+        label: Kapak açıklaması (alt text)
+        description: Kapak görseli varsa zorunlu.
+        type: text
+      - name: caption
+        label: Kapak altyazısı
+        description: Grafiğin kendi başlığı.
+        type: string
+      - name: tools
+        label: Araçlar
+        type: string
+        list: true
+      - name: repo
+        label: GitHub reposu
+        type: string
+        pattern: { regex: "^$|^https://github\\.com/", message: "https://github.com/ ile başlamalı" }
+      - name: body
+        label: Yazı
+        description: Markdown. Her "## Başlık" sayfada yeni bir satır açar.
+        type: code
+        options: { format: markdown }

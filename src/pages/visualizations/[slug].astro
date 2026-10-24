@@ -23,7 +23,7 @@ const facts = [
   { k: 'Tools', v: d.tools.join(', ') || 'n/a' },
   { k: 'Source', v: d.source ?? 'n/a' },
 ];
-const plates = d.gallery.map((src, i) => ({ src, alt: d.galleryAlt[i] }));
+const plates = d.gallery.map((g) => ({ src: g.image, alt: g.alt }));
 // A shared link to a chart shows the chart itself.
 const share = await getImage({ src: d.chart, width: Math.min(1200, d.chart.width), format: 'jpg' });
 const links = d.instagram ? [{ label: 'Published', text: 'The original post on Instagram ↗', href: d.instagram }] : [];
