@@ -136,19 +136,20 @@ img { display: block; max-width: 100%; height: auto; }
    the gaps themselves and never double up where cells meet. */
 .facts {
   margin-block: 0;
-  /* The last cell is wider: it holds the longest value (an email address,
-     a source line) and must not break it. */
-  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)) minmax(0, 1.45fr);
+  /* Each cell is as wide as its value, and the spare width is shared out, so
+     every value stays on one line. A cell that does not fit moves to the next
+     row rather than breaking its text, and every row fills: an empty cell
+     would show the --rule ground through as a grey block. */
+  display: flex; flex-wrap: wrap;
   gap: 1px; background: var(--rule);
 }
-.fact { background: var(--bg); padding: 16px var(--pad); min-width: 0; }
+.fact { flex: 1 1 auto; background: var(--bg); padding: 16px var(--pad); min-width: 0; }
 .fact dt { margin: 0; color: var(--muted); }
 .fact dd { margin: 4px 0 0; }
-/* Four across, or two below 860px. Wide cells (an email address, a status)
-   take the whole row in two columns, which keeps every row full: an empty
-   cell would show the --rule ground through as a grey block. */
-@container (max-width: 860px) {
-  .facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+/* On a phone two cells share a row and a long value may wrap; wide cells (an
+   email address, a status) take the whole row. */
+@container (max-width: 600px) {
+  .facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .fact--wide { grid-column: 1 / -1; }
 }
 .fact dd { overflow-wrap: break-word; }
