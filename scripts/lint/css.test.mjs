@@ -4,10 +4,10 @@ import { findBannedPatterns, findDisallowedColors, lintCss, ALLOWED_HEXES } from
 
 // Written out on purpose: adding or changing a colour token should be a
 // decision someone makes here too, not something the lint quietly absorbs.
-test('the allowlist is exactly the eight tokens in tokens.css', () => {
+test('the allowlist is exactly the nine tokens in tokens.css', () => {
   assert.deepEqual(
     [...ALLOWED_HEXES].sort(),
-    ['#0b0d10', '#0f1216', '#151a20', '#1f242b', '#2a3038', '#7fc0d8', '#8a929c', '#e4e7eb'],
+    ['#0b0d10', '#0f1216', '#151a20', '#1f242b', '#2a3038', '#7fc0d8', '#8a929c', '#e4e7eb', '#f5413d'],
   );
 });
 

@@ -27,6 +27,10 @@ hata e-postası atar. Hatayı düzeltip tekrar kaydetmen yeterli.
 **Hakkında ve bilgiler** → **Hakkında** alanı. İsminin altındaki paragraf
 budur; Google'da ve paylaşılan linklerde de bu görünür. En fazla 300 karakter.
 
+Bir kelimeyi vurgulamak için iki yıldız arasına al: `**MediaMarkt**`. Sitede
+kalın ve kırmızı görünür; Google'da ve paylaşılan linklerde yıldızlar düşer,
+düz yazı kalır. Az kullan: bir paragrafta bir vurgu yeterli.
+
 Aynı sayfada:
 - **Araçlar**: paragrafın altındaki satır.
 - **Bilgi şeridi**: Focus, Based, Now gibi kutular. Kutu ekleyip silebilirsin.

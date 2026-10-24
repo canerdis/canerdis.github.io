@@ -4,7 +4,7 @@ import Tiles from '../../components/Tiles.astro';
 import { getWork } from '../../lib/work';
 
 const items = (await getWork()).filter((it) => it.collection === 'viz');
-// Portrait clippings fill a 4:5 frame; if a wide chart is ever added, the
+// Portrait clippings fill a 3:4 frame; if a wide chart is ever added, the
 // whole grid switches to showing each picture whole instead of cropping.
 const allPortrait = items.every((it) => it.image && it.image.height / it.image.width >= 1.1);
 ---

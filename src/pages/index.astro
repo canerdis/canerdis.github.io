@@ -7,7 +7,7 @@ import { getWork } from '../lib/work';
 import { SITE } from '../config';
 
 const work = await getWork();
-// Portrait pictures only: the band crops every tile to the magazine's 4:5,
+// Portrait pictures only: the band frames every tile at the magazine's 3:4,
 // which would cut the middle out of a wide chart.
 const latest = work
   .filter((it) => it.collection === 'viz' && it.image && it.image.height / it.image.width >= 1.1)
@@ -22,7 +22,7 @@ const facts = [...SITE.facts, { k: 'Contact', v: SITE.email, href: `mailto:${SIT
       <span class="mask"><span data-rv="mask" data-rv-d="260">{first}</span></span>
       <span class="mask"><span data-rv="mask" data-rv-d="340">{rest.join(' ')}</span></span>
     </h1>
-    <p class="lede" data-rv="up" data-rv-d="480">{SITE.line}</p>
+    <p class="lede" data-rv="up" data-rv-d="480" set:html={SITE.lineHtml} />
     <p class="hero__tools mono muted" data-rv="up" data-rv-d="560">{SITE.tools}</p>
   </section>
   <div aria-hidden="true" class="rule" data-rv="sweep" data-rv-d="220"></div>

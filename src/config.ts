@@ -10,11 +10,18 @@ import data from './data/site.json' with { type: 'json' };
 // full row on a phone, where two half-width cells would not fit it.
 export interface Fact { k: string; v: string; live?: boolean; wide?: boolean; href?: string }
 
+// Words wrapped in **...** in the about paragraph are set bold in --accent
+// under the name. Everywhere the text leaves the page (search results, share
+// cards, the length budget) the markers are dropped.
+const MARK = /\*\*(.+?)\*\*/g;
+const escape = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
 export const SITE = {
   name: data.name,
   // The about paragraph under the name. It is also the page description that
   // search results and shared links show.
-  line: data.line,
+  line: data.line.replace(MARK, '$1'),
+  lineHtml: escape(data.line).replace(MARK, '<strong>$1</strong>'),
   // Shown under the paragraph, as part of the description.
   tools: data.tools,
   email: data.email,

@@ -2,11 +2,12 @@
    build on any other.
 
    The interface is a cool monochrome. Colour on this site comes from inside
-   the charts; the single exception is --dot, the breathing status dot, which
-   marks the one fact on the page that is about right now.
+   the charts; the exceptions are --dot, the breathing status dot, which
+   marks the one fact on the page that is about right now, and --accent, the
+   red for the words the about paragraph marks with **...** (the employer).
 
-   Contrast on --bg: --fg 15.7:1, --muted 6.2:1 (6.0:1 on --hov). --rule, --ph, --hov and --edge
-   are surfaces and hairlines, not text, so the 4.5:1 threshold does not apply. */
+   Contrast on --bg: --fg 15.7:1, --muted 6.2:1 (6.0:1 on --hov), --accent 5.3:1. --rule, --ph,
+   --hov and --edge are surfaces and hairlines, not text, so the 4.5:1 threshold does not apply. */
 :root {
   --bg:    #0B0D10; /* near-black with a cold cast */
   --fg:    #E4E7EB; /* text */
@@ -16,6 +17,7 @@
   --hov:   #0F1216; /* a row under the pointer */
   --edge:  #2A3038; /* the outline of the floating preview */
   --dot:   #7FC0D8; /* the status dot, nothing else */
+  --accent: #F5413D; /* MediaMarkt's red, lifted to read on --bg; marked words in the about paragraph only */
 
   --sans: 'Geist', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --mono: 'Geist Mono', ui-monospace, 'Cascadia Mono', Consolas, monospace;

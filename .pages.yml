@@ -30,7 +30,7 @@ content:
         required: true
       - name: line
         label: Hakkında
-        description: İsminin altındaki paragraf. Google'da ve paylaşılan linklerde de bu görünür. En fazla 300 karakter.
+        description: İsminin altındaki paragraf. Google'da ve paylaşılan linklerde de bu görünür. En fazla 300 karakter. Bir kelimeyi kalın ve kırmızı yapmak için iki yıldız arasına al, örn. **MediaMarkt**.
         type: text
         required: true
         options: { maxlength: 300 }

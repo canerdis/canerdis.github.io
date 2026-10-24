@@ -3,7 +3,8 @@ import { getImage } from 'astro:assets';
 import { stamp, type WorkItem } from '../lib/work';
 
 // The index: one row per piece of work, newest first. With a mouse, a small
-// picture of the row under the pointer follows it down the list.
+// picture of the row under the pointer follows it down the list, whole and in
+// its own shape: `data-ar` hands the picture's width / height to the preview.
 // `spaced` opens the section with a gap and a rule, for when something
 // sits directly above it.
 interface Props { items: WorkItem[]; heading: string; id?: string; delay?: number; spaced?: boolean }
@@ -25,7 +26,7 @@ const total = String(items.length).padStart(2, '0');
   </div>
   <div class="rows" data-preview-list>
     {items.map((it, i) => (
-      <a class="row" href={it.href} data-rv="row" data-i={i} data-curtain={`${it.no} · ${it.title}`}>
+      <a class="row" href={it.href} data-rv="row" data-i={i} data-ar={it.image && (it.image.width / it.image.height).toFixed(3)} data-curtain={`${it.no} · ${it.title}`}>
         <span class="row__meta"><span>{it.no}</span><span>{stamp(it.date)}</span><span class="row__kind">{it.type}</span></span>
         <span class="row__body">
           <span class="row__text">

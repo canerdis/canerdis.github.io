@@ -5,8 +5,9 @@ import type { WorkItem } from '../lib/work';
 // Work shown as pictures, in cells separated by hairline gaps. Every tile in
 // one grid takes the same frame: `ratio` sets it, and `fit` decides whether a
 // picture fills the frame (cover, for the magazine's portrait clippings,
-// which all share one shape) or sits whole inside it (contain, for wide
-// charts, which a crop would cut through the middle of).
+// which all share one shape, 3:4, so the default frame shows them whole) or
+// sits whole inside it (contain, for wide charts, which a crop would cut
+// through the middle of).
 interface Props {
   items: WorkItem[];
   heading: string;
@@ -18,7 +19,7 @@ interface Props {
   delay?: number;
   spaced?: boolean;
 }
-const { items, heading, id, link, ratio = '4 / 5', fit = 'cover', cols = 4, delay, spaced = false } = Astro.props;
+const { items, heading, id, link, ratio = '3 / 4', fit = 'cover', cols = 4, delay, spaced = false } = Astro.props;
 const headingId = `${id ?? heading.toLowerCase().replace(/\W+/g, '-')}-h`;
 const at = (n: number) => (delay != null ? delay + n : undefined);
 const sizes = `(max-width: 760px) 50vw, ${Math.round(1040 / cols)}px`;

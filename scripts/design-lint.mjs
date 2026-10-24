@@ -43,6 +43,7 @@ const BG = '#0b0d10';
 for (const [name, hex, ground = BG] of [
   ['--fg', '#e4e7eb'],
   ['--muted', '#8a929c'],
+  ['--accent', '#f5413d'],
   // Muted text also sits on a hovered row.
   ['--muted on --hov', '#8a929c', '#0f1216'],
 ]) {

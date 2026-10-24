@@ -245,7 +245,9 @@ function preview() {
   list.addEventListener('mouseleave', hide);
   list.addEventListener('mouseover', (e) => {
     const row = e.target.closest('[data-i]');
-    if (row) reel.style.transform = `translateY(-${Number(row.dataset.i) * 100}%)`;
+    if (!row) return;
+    reel.style.transform = `translateY(-${Number(row.dataset.i) * 100}%)`;
+    if (row.dataset.ar) box.style.setProperty('--ar', row.dataset.ar);
   });
   // A wheel turn moves the rows under a still pointer; the picture follows
   // only on the next mouse move, so hide it rather than show the wrong one.
