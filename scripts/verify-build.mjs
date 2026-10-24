@@ -120,13 +120,13 @@ for (const [f, html] of pages) {
   }
 }
 
-// 7. The hero line stays short. It sits under the name at 46ch, and three
-//    lines is the most it can take before the facts strip and the first
+// 7. The about paragraph stays short. It sits under the name at 60ch, and
+//    five lines is the most it can take before the facts strip and the first
 //    pictures are pushed off the first screen at 1440x900.
 const { SITE } = await import('../src/config.ts');
-const LINE_LIMIT = 140;
+const LINE_LIMIT = 300;
 if (SITE.line.length > LINE_LIMIT) {
-  failures.push(`SITE.line: ${SITE.line.length} chars exceeds the ${LINE_LIMIT}-char budget for the line under the name`);
+  failures.push(`SITE.line: ${SITE.line.length} chars exceeds the ${LINE_LIMIT}-char budget for the paragraph under the name`);
 }
 
 if (failures.length) {

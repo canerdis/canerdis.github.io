@@ -4,7 +4,7 @@ import { SITE } from '../config';
 
 // `image` is what a shared link shows; pages without their own get the card.
 interface Props { title?: string; description?: string; image?: { src: string; alt: string } }
-const { title, description = SITE.bio, image } = Astro.props;
+const { title, description = SITE.line, image } = Astro.props;
 const fullTitle = title ? `${title} · ${SITE.name}` : `${SITE.name} · pricing, charts and analysis`;
 const year = new Date().getFullYear();
 const linkedin = SITE.links.find((l) => l.label === 'LinkedIn')!.href;

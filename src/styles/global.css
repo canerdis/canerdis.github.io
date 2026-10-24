@@ -124,7 +124,7 @@ img { display: block; max-width: 100%; height: auto; }
 .mask { display: block; overflow: hidden; padding-bottom: 0.08em; margin-bottom: -0.08em; }
 .mask > span { display: block; }
 .lede {
-  margin: 24px 0 0; max-width: 46ch;
+  margin: 24px 0 0; max-width: 60ch;
   font-size: clamp(18px, 1.6cqi, 20px); line-height: 1.45; color: var(--muted); text-wrap: pretty;
 }
 /* The tools, as part of the description: metadata, so mono. */
