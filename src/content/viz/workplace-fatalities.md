@@ -24,8 +24,8 @@ variation survives that standardisation.
 A good deal, as it turns out. Within the EU, France reports the highest rate at
 **3.6** deaths per 100,000 workers, followed by Bulgaria (3.51) and Cyprus (3.24).
 
-Outside the bloc the gap widens sharply. **Türkiye records 11.47** — more than three
-times the highest EU rate — with Ukraine at 7.1 and Russia at 5.03.
+Outside the bloc the gap widens sharply. **Türkiye records 11.47**, more than three
+times the highest EU rate, with Ukraine at 7.1 and Russia at 5.03.
 
 The industries behind the numbers are consistent everywhere: construction,
 transport and storage, and manufacturing account for most fatal accidents.

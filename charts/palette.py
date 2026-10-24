@@ -15,7 +15,7 @@ RULE = "#1F242B"
 
 # Categorical palette chosen under the dataviz skill: colorblind-safe and
 # legible on BG, validated at >=3:1 contrast against the site surface.
-# Order matters — it is the colorblind-safety mechanism. Do not reorder.
+# Order matters: it is the colorblind-safety mechanism. Do not reorder.
 CATEGORICAL = [
     "#3987e5",  # blue
     "#199e70",  # aqua

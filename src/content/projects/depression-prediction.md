@@ -1,5 +1,5 @@
 ---
-title: Machine Learning Lab — Student Depression
+title: "Machine Learning Lab: Student Depression"
 date: 2026-02-10
 summary: >-
   Group project at Ulm comparing four classifiers on a student survey, and what
@@ -23,8 +23,8 @@ compare classifier families properly rather than reaching for one.
 ## Getting the data usable
 
 The survey was dirtier than its shape suggested. The `City` column alone
-contained city names, degree titles, free text and bare numbers mixed together —
-so it was repaired first, then replaced with each city's population, which turns
+contained city names, degree titles, free text and bare numbers mixed together.
+It was repaired first, then replaced with each city's population, which turns
 an unusable high-cardinality string field into one ordered number.
 
 The rest of the preparation was ordinary and deliberate: binary flags for
@@ -50,7 +50,7 @@ generated the candidate alphas and `GridSearchCV` with 5 folds picked one.
 
 The interesting part is that **the ranking flips depending on the metric**. The
 neural network wins on accuracy; Random Forest wins on sensitivity, which for a
-screening tool is the one that matters — a missed case is worse than a false
+screening tool is the one that matters, because a missed case is worse than a false
 alarm. Reporting only the headline number would have chosen the wrong model.
 
 ## What the presentation was missing
@@ -59,7 +59,7 @@ Looking back at it with more experience, the comparison needed a row it did not
 have: **the majority-class baseline**. At a 58.6% positive rate, predicting
 "depressed" for everybody scores 58.6% accuracy and **100% sensitivity**.
 
-That does not overturn the result — every model beats 58.6% accuracy by more than
+That does not overturn the result. Every model beats 58.6% accuracy by more than
 20 points, so they are all learning something real. But without the baseline on
 the chart, a reader cannot tell whether 83% sensitivity is good, and cannot see
 that the do-nothing rule beats every model on that metric alone. It is on the
@@ -76,16 +76,16 @@ Two other things I would do differently:
 
 ## When the dataset was replaced
 
-The dataset this was built on was later swapped for one five times the size —
-140,700 records covering working professionals as well as students — and the
+The dataset this was built on was later swapped for one five times the size
+(140,700 records covering working professionals as well as students), and the
 original pipeline could no longer run at all. Its cleaning step returned **0 of
 140,700 rows**, because every row is null on either the academic block or the work
 block, and a hard-coded lookup mapped **100%** of sleep-duration values to null.
 
 Rebuilding it for that data changed the conclusions:
 
-- The 80% null rate was **structural, not missing** — students and professionals
-  answer different question blocks — so each complementary pair collapsed onto its
+- The 80% null rate was **structural, not missing**: students and professionals
+  answer different question blocks. So each complementary pair collapsed onto its
   shared 1–5 scale rather than being imputed.
 - The class split moved from 58/42 to 82/18, so accuracy stopped meaning anything:
   the majority rule alone scores **0.8183**. PR-AUC and balanced accuracy replaced

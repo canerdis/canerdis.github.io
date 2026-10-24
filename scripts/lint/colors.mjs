@@ -41,7 +41,7 @@ export function hexToHsl(hex) {
 // Lower bound is 235, not 240, so canonical indigo (#6366F1, ~238.7 deg)
 // is caught while true blue (#3B82F6, ~217 deg) stays outside.
 // The saturation gate exists so near-neutrals sitting at a purple hue
-// are not flagged — otherwise a warm grey could fail the build.
+// are not flagged; otherwise a warm grey could fail the build.
 export function isPurple(hex) {
   const { h, s } = hexToHsl(hex);
   return h >= 235 && h <= 300 && s > 15;
@@ -84,7 +84,7 @@ export function hslToHex(h, s, l) {
 
 // Matches rgb()/rgba() with either comma- or space-separated channels, and
 // either a comma- or slash-separated alpha component. Alpha is captured but
-// discarded — same "check the RGB, ignore transparency" rule as alpha-hex.
+// discarded, the same "check the RGB, ignore transparency" rule as alpha-hex.
 const RGB_FUNC_RE =
   /\brgba?\(\s*(\d{1,3}(?:\.\d+)?)\s*[,\s]\s*(\d{1,3}(?:\.\d+)?)\s*[,\s]\s*(\d{1,3}(?:\.\d+)?)\s*(?:[,/]\s*[\d.]+%?\s*)?\)/gi;
 
@@ -104,7 +104,7 @@ export function findFunctionalColors(css) {
 }
 
 // Denylist of named CSS colors in the purple/violet/magenta family. This is
-// intentionally NOT the full 147-name CSS color list — validating every
+// intentionally NOT the full 147-name CSS color list: validating every
 // named color against the allowlist risks flagging non-color identifiers
 // that happen to share a word with a CSS keyword. Only this narrow purple
 // family is checked by name.

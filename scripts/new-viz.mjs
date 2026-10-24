@@ -67,7 +67,7 @@ if (!existsSync(opts.image)) die(`image not found: ${opts.image}`);
 
 const ext = extname(opts.image).toLowerCase();
 if (!['.png', '.jpg', '.jpeg', '.svg', '.webp'].includes(ext)) {
-  die(`unsupported image type "${ext}" — use png, jpg, svg or webp`);
+  die(`unsupported image type "${ext}"; use png, jpg, svg or webp`);
 }
 
 const entryPath = join(CONTENT, `${opts.slug}.md`);
@@ -122,7 +122,7 @@ const front = [
   '---',
   '',
   opts['no-writeup']
-    ? '<!-- writeup: false — this entry has no detail page, so no body is needed. -->'
+    ? '<!-- writeup: false. This entry has no detail page, so no body is needed. -->'
     : 'TODO: the write-up. What the chart shows, why it was worth making, and what\nthe reader should take from it. Delete this line before publishing.',
   '',
 ].join('\n');

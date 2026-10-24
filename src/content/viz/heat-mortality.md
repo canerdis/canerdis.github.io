@@ -21,7 +21,7 @@ cities. That total is the headline, but it hides the more useful finding, which 
 how unevenly it lands.
 
 Age-standardised heat-related mortality runs from **28.4 per 100,000 in Croatia**
-down to **0.8 in Ireland** — a thirty-five-fold difference across the same
+down to **0.8 in Ireland**, a thirty-five-fold difference across the same
 continent. The gradient runs southeast to northwest, which tracks climate, but also
 building stock, urban density and how much of the population is elderly.
 

@@ -17,8 +17,8 @@ const d = entry.data;
 const facts = [
   { k: 'Type', v: d.kind },
   { k: 'Date', v: stamp(d.date, true) },
-  { k: 'Tools', v: d.tools.join(', ') || '—' },
-  d.repo ? { k: 'Code', v: 'GitHub ↗', href: d.repo } : { k: 'Code', v: '—' },
+  { k: 'Tools', v: d.tools.join(', ') || 'n/a' },
+  d.repo ? { k: 'Code', v: 'GitHub ↗', href: d.repo } : { k: 'Code', v: 'n/a' },
 ];
 const links = d.repo ? [{ label: 'Code', text: 'The repository on GitHub ↗', href: d.repo }] : [];
 ---

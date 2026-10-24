@@ -1,5 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
+import { getImage } from 'astro:assets';
 import Layout from '../../layouts/Layout.astro';
 import Detail from '../../components/Detail.astro';
 import { getWork, nextOf, stamp } from '../../lib/work';
@@ -19,12 +20,14 @@ const d = entry.data;
 const facts = [
   { k: 'Type', v: d.kind },
   { k: 'Date', v: stamp(d.date, true) },
-  { k: 'Tools', v: d.tools.join(', ') || '—' },
-  { k: 'Source', v: d.source ?? '—' },
+  { k: 'Tools', v: d.tools.join(', ') || 'n/a' },
+  { k: 'Source', v: d.source ?? 'n/a' },
 ];
 const plates = d.gallery.map((src, i) => ({ src, alt: d.galleryAlt[i] }));
+// A shared link to a chart shows the chart itself.
+const share = await getImage({ src: d.chart, width: Math.min(1200, d.chart.width), format: 'jpg' });
 const links = d.instagram ? [{ label: 'Published', text: 'The original post on Instagram ↗', href: d.instagram }] : [];
 ---
-<Layout title={d.title} description={d.summary}>
+<Layout title={d.title} description={d.summary} image={{ src: share.src, alt: d.alt }}>
   <Detail item={item} html={entry.rendered?.html ?? ''} next={nextOf(work, item.id)} facts={facts} image={d.chart} alt={d.alt} caption={d.source} plates={plates} links={links} />
 </Layout>

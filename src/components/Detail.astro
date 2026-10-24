@@ -49,7 +49,7 @@ const sizes = '(max-width: 1040px) 100vw, 1040px';
     </div>
     <figcaption class="mono">
       <span aria-hidden="true" class="rule" data-rv="sweep"></span>
-      <span data-rv="up" style="display:block">Fig. 1 — {caption ?? item.title}</span>
+      <span data-rv="up" style="display:block">Fig. 1 · {caption ?? item.title}</span>
     </figcaption>
   </figure>
 )}
@@ -90,7 +90,7 @@ const sizes = '(max-width: 1040px) 100vw, 1040px';
     </section>
   ))}
 
-  <a class="row next" href={next.href} data-rv="row" data-curtain={`${next.no} — ${next.title}`}>
+  <a class="row next" href={next.href} data-rv="row" data-curtain={`${next.no} · ${next.title}`}>
     <span class="row__meta mono"><span>Next</span><span>{next.no}</span></span>
     <span class="row__body"><span class="next__title">{next.title}<span aria-hidden="true">→</span></span></span>
   </a>

@@ -100,7 +100,7 @@ for (const [f, html] of pages) {
   }
 }
 
-// 6. Internal links resolve — CASE-SENSITIVELY.
+// 6. Internal links resolve, CASE-SENSITIVELY.
 //    This is the Windows trap: local dev is case-insensitive, GitHub Pages
 //    serves from Linux and is not. A link to /Visualizations works on the
 //    author's machine and 404s in production. The Set lookup below is

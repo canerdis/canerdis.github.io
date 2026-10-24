@@ -24,7 +24,7 @@ Being a statistics student, I logged my own process as it happened, then put the
 log through a Sankey diagram. This is what came out.
 
 The most striking part is at the very beginning. **439 of the 463 applications
-were rejected outright or never answered at all** — no stage, no test, no reply.
+were rejected outright or never answered at all**. No stage, no test, no reply.
 Only about **5%** of first applications produce any response, and most of the
 time the process does not end with a clear "no". It ends with silence.
 

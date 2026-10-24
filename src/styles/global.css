@@ -302,8 +302,8 @@ a.row:hover .row__arrow, a.row:focus-visible .row__arrow { opacity: 1; transform
 .page-hero .lede { margin-top: 18px; max-width: 58ch; }
 
 .figure { margin-block: 0; }
-/* Charts come in every shape — tall magazine clippings, wide three-panel
-   exports — so the frame holds each at its own ratio, capped in height, on
+/* Charts come in every shape (tall magazine clippings, wide three-panel
+   exports), so the frame holds each at its own ratio, capped in height, on
    the image ground. Nothing is cropped. */
 .figure__frame { overflow: hidden; background: var(--ph); }
 .figure__frame img { width: 100%; height: auto; max-height: min(86vh, 960px); object-fit: contain; }

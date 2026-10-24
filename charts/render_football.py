@@ -5,7 +5,7 @@ with navy/grey bars. That is fine in the project repo, but a white chart on a
 #0B0D10 page reads as a lightbulb. This script recomputes the same figures from
 the already-derived fact table and re-renders them transparent, in house colors.
 
-Definitions are copied from `football_analytics.py` exactly — in particular
+Definitions are copied from `football_analytics.py` exactly, in particular
 "Attackers only" means attackers who *played* (appearances > 0), not all
 attacker-seasons. Getting that wrong moves the number from 0.573 to 0.431.
 

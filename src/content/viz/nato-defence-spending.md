@@ -21,7 +21,7 @@ Ranking NATO's 32 members by core defence spending as a share of GDP produces a
 league table that maps almost perfectly onto geography.
 
 **Lithuania leads at 5.33%**, followed by Estonia (5.10), Latvia (4.92) and
-Poland (4.68) — all on the eastern flank. **Greece** is the fifth above the line
+Poland (4.68), all on the eastern flank. **Greece** is the fifth above the line
 at 3.65, and the only one of the five that does not border the Baltic or Russia.
 
 Those five are the whole list. Denmark (3.49), Sweden (3.22), Norway and the

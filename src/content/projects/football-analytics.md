@@ -49,14 +49,14 @@ pure physical ratings do. For scouting under a transfer budget that matters,
 because those attributes are cheaper to buy than pace.
 
 **Possession has a break-even point, not a guarantee.** Teams above roughly **50%**
-possession win more often, but the distributions overlap heavily — plenty of
+possession win more often, but the distributions overlap heavily: plenty of
 matches are won on well under half the ball. Possession is a KPI a coach can use,
 not a rule that decides games.
 
 ## Where the pipeline was wrong, and how we found out
 
-The `Match.goal` column stores XML, and the obvious parse — count every
-`<player1>` element — is wrong. It captures 39,863 events, of which **2,374 are
+The `Match.goal` column stores XML, and the obvious parse (count every
+`<player1>` element) is wrong. It captures 39,863 events, of which **2,374 are
 not goals for that player**: own goals, missed penalties, disallowed goals.
 
 Nothing in the schema says so. What exposed it was reconciling the parsed totals
@@ -71,15 +71,16 @@ Two smaller corrections came out of the same pass:
   keeper-seasons were quietly distributed across the outfield classes.
 - **1,518 player-seasons had incomplete attribute rows.** Comparing `NaN` returns
   `False`, so a chained if/elif routed all of them to the fallback branch instead
-  of failing — invisible unless you go looking for it.
+  of failing. It stays invisible unless you go looking for it.
 
 ## Afterwards
 
 I kept working on it after the course ended. Segmenting by position and adding a
 minimum-appearances filter raised the correlation between finishing rating and
 goals from **0.303 to 0.618**, and appearances alone correlate with goals at
-**0.534** — meaning a season total is partly a measure of who got picked, not who
-finished well.
+**0.534**. A season total is partly a measure of who got picked, not who
+finished well. That later work is in an
+[interactive report](/football-dashboard.html).
 
 ## Limitations
 

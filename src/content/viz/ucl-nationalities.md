@@ -25,7 +25,7 @@ English players account for most of the pitch time, and the peaks are extreme:
 **15 Italian players** in the 2000 final, **15 Spanish players** in 2003.
 
 Then the bands narrow and multiply. The modern era spreads minutes across a far
-wider set of nationalities, and the change accelerates after a specific moment —
+wider set of nationalities, and the change accelerates after a specific moment:
 the **1995 Bosman ruling**, which removed limits on foreign players in European
 competition.
 

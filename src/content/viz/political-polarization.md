@@ -24,7 +24,7 @@ interaction with someone from an opposing political camp is now more likely to t
 hostile than friendly.
 
 The highest levels sit in **Türkiye (3.98)**, **Poland (3.98)** and **Belarus
-(3.97)** — close enough to the top of the scale that there is very little common
+(3.97)**, close enough to the top of the scale that there is very little common
 ground left to measure.
 
 Level and direction are different questions, though, and the fastest-moving
@@ -32,7 +32,7 @@ countries are not the most polarised ones. Over 25 years the sharpest increases
 were in **Ukraine (+2.22)**, **Bulgaria (+2.09)** and **Germany (+2.03)**.
 
 The trend is not universal. Kosovo, Bosnia and Herzegovina, Malta, Montenegro,
-Iceland and Estonia have all *reduced* social polarisation since 2000 — which is
+Iceland and Estonia have all *reduced* social polarisation since 2000. That is
 the part of the map worth dwelling on, because it means the direction is not fixed.
 
 Published by Europe Magazine.

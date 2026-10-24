@@ -2,11 +2,15 @@
 import '../styles/global.css';
 import { SITE } from '../config';
 
-interface Props { title?: string; description?: string }
-const { title, description = SITE.bio } = Astro.props;
-const fullTitle = title ? `${title} — ${SITE.name}` : `${SITE.name} — pricing, charts and analysis`;
+// `image` is what a shared link shows; pages without their own get the card.
+interface Props { title?: string; description?: string; image?: { src: string; alt: string } }
+const { title, description = SITE.bio, image } = Astro.props;
+const fullTitle = title ? `${title} · ${SITE.name}` : `${SITE.name} · pricing, charts and analysis`;
 const year = new Date().getFullYear();
 const linkedin = SITE.links.find((l) => l.label === 'LinkedIn')!.href;
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const share = image ?? { src: '/og.png', alt: `${SITE.name}: ${SITE.line}` };
+const shareSrc = new URL(share.src, Astro.site).href;
 ---
 <!doctype html>
 <html lang="en">
@@ -16,7 +20,19 @@ const linkedin = SITE.links.find((l) => l.label === 'LinkedIn')!.href;
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
     <meta name="theme-color" content="#0B0D10" />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    {/* What LinkedIn, WhatsApp and the rest show when the link is shared. */}
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={shareSrc} />
+    <meta property="og:image:alt" content={share.alt} />
+    <meta name="twitter:card" content="summary_large_image" />
     <link rel="preload" href="/fonts/Geist-latin.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/fonts/GeistMono-latin.woff2" as="font" type="font/woff2" crossorigin />
     {/* Runs before first paint. With motion allowed it holds the reveal

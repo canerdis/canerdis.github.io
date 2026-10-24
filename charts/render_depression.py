@@ -1,7 +1,7 @@
 """Render the depression-prediction project's charts in the site house style.
 
 The project writes CSV results but no figures, so these are built from
-`outputs/*.csv` — every value plotted comes from a file the pipeline produced.
+`outputs/*.csv`. Every value plotted comes from a file the pipeline produced.
 
     python charts/render_depression.py --source "path/to/Macihne Learning"
 """
@@ -44,7 +44,7 @@ def _frame(ax, title: str, xlabel: str = "", ylabel: str = "", grid_axis: str = 
 def chart_models(src: Path, outdir: Path) -> None:
     """The project's central argument: accuracy alone certifies nothing.
 
-    The majority baseline is drawn in muted grey rather than a categorical hue —
+    The majority baseline is drawn in muted grey rather than a categorical hue:
     it is the null, not a third competitor. Its tall accuracy bar beside its
     zero F1 is the whole point of the figure.
     """
@@ -102,7 +102,7 @@ def chart_tuning(src: Path, outdir: Path) -> None:
 
     - The y-range is deliberately wider than the data. Zooming to the data would
       manufacture visual separation that the 0.004 candidate spread says is not
-      there — the honest rendering of "no difference" is a flat line.
+      there. The honest rendering of "no difference" is a flat line.
     - Colour encodes the *model*, since that is what actually separates the two
       score levels; the strategy is annotated. Labels alternate above/below
       because the 36-fit runs sit close enough on a log axis to collide.

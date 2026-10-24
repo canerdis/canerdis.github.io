@@ -1,67 +1,58 @@
-<title>What Pooling Hides — European Football Analytics</title>
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>What pooling hides: European football analytics · Caner Diş</title>
+<meta name="description" content="Finishing skill and goals across 11 European leagues, 2008–2016: segmenting by position and playing time doubles the measured correlation from 0.303 to 0.618.">
+<meta name="theme-color" content="#0B0D10">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <style>
+  @font-face {
+    font-family: 'Geist';
+    src: url('/fonts/Geist-latin.woff2') format('woff2-variations');
+    font-weight: 100 900; font-display: swap;
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  @font-face {
+    font-family: 'Geist';
+    src: url('/fonts/Geist-latin-ext.woff2') format('woff2-variations');
+    font-weight: 100 900; font-display: swap;
+    unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  }
+  @font-face {
+    font-family: 'Geist Mono';
+    src: url('/fonts/GeistMono-latin.woff2') format('woff2-variations');
+    font-weight: 100 900; font-display: swap;
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+  /* The site's own ground and neutrals, so the report reads as part of it.
+     The series colours are the report's dark-stepped values. */
   :root {
-    color-scheme: light;
-    --plane:        #f1f2f4;
-    --surface:      #fcfcfb;
-    --ink:          #0b0b0b;
-    --ink-2:        #52514e;
-    --ink-3:        #898781;
-    --grid:         #e1e0d9;
-    --axis:         #c3c2b7;
-    --ring:         rgba(11,11,11,.10);
-    --s1:           #2a78d6;
-    --s2:           #eb6834;
-    --s3:           #1baf7a;
-    --s4:           #eda100;
-    --pos:          #2a78d6;
-    --neg:          #e34948;
-    --mid:          #f0efec;
-    --deemph:       #b9b8b2;
-    --shadow:       0 1px 2px rgba(11,11,11,.05);
-  }
-  @media (prefers-color-scheme: dark) {
-    :root:where(:not([data-theme="light"])) {
-      color-scheme: dark;
-      --plane:   #0c0d0f;
-      --surface: #1a1a19;
-      --ink:     #ffffff;
-      --ink-2:   #c3c2b7;
-      --ink-3:   #898781;
-      --grid:    #2c2c2a;
-      --axis:    #383835;
-      --ring:    rgba(255,255,255,.10);
-      --s1:      #3987e5;
-      --s2:      #d95926;
-      --s3:      #199e70;
-      --s4:      #c98500;
-      --pos:     #3987e5;
-      --neg:     #e66767;
-      --mid:     #383835;
-      --deemph:  #55544f;
-      --shadow:  none;
-    }
-  }
-  :root[data-theme="dark"] {
     color-scheme: dark;
-    --plane:   #0c0d0f;
-    --surface: #1a1a19;
-    --ink:     #ffffff;
-    --ink-2:   #c3c2b7;
-    --ink-3:   #898781;
-    --grid:    #2c2c2a;
-    --axis:    #383835;
-    --ring:    rgba(255,255,255,.10);
+    --plane:   #0B0D10;
+    --surface: #151A20;
+    --ink:     #E4E7EB;
+    --ink-2:   #C3C8CF;
+    --ink-3:   #8A929C;
+    --grid:    #1F242B;
+    --axis:    #2A3038;
+    --ring:    #2A3038;
     --s1:      #3987e5;
     --s2:      #d95926;
     --s3:      #199e70;
     --s4:      #c98500;
     --pos:     #3987e5;
     --neg:     #e66767;
-    --mid:     #383835;
-    --deemph:  #55544f;
+    --mid:     #2A3038;
+    --deemph:  #4A515A;
     --shadow:  none;
   }
+
+  /* The way back to the site. */
+  .back { margin: 0; font-family: 'Geist Mono', ui-monospace, monospace; font-size: 11px;
+    letter-spacing: .06em; text-transform: uppercase; color: var(--ink-3); }
+  .back a { color: inherit; text-decoration: none; }
+  .back a:hover, .back a:focus-visible { color: var(--ink); }
 
   * { box-sizing: border-box; }
 
@@ -69,7 +60,7 @@
     margin: 0;
     background: var(--plane);
     color: var(--ink);
-    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-family: "Geist", system-ui, -apple-system, "Segoe UI", sans-serif;
     font-size: 16px;
     line-height: 1.55;
     -webkit-font-smoothing: antialiased;
@@ -266,7 +257,7 @@
     background: var(--surface);
     border: 1px solid var(--ring);
     border-radius: 8px;
-    box-shadow: 0 4px 16px rgba(11,11,11,.16);
+    box-shadow: none;
     padding: 9px 12px;
     font-size: 13px;
     color: var(--ink-2);
@@ -281,7 +272,7 @@
   #tip .t-val { color: var(--ink); font-weight: 640; font-variant-numeric: tabular-nums; margin-left: auto; }
   #tip .t-n { color: var(--ink-3); font-size: 11.5px; margin-top: 5px; }
 
-  .codes { font-family: ui-monospace, "Cascadia Code", Consolas, monospace; font-size: .92em; }
+  .codes { font-family: "Geist Mono", ui-monospace, "Cascadia Code", Consolas, monospace; font-size: .92em; }
 
   footer {
     color: var(--ink-3);
@@ -304,11 +295,13 @@
 
 <div class="wrap">
 
+  <p class="back"><a href="/data-science/football-analytics/">← The write-up</a> · <a href="/">Caner Diş</a></p>
+
   <header class="masthead">
     <p class="eyebrow">European Soccer Database · 11 leagues · 2008–2016</p>
     <h1>What pooling hides</h1>
     <p class="standfirst">
-      Finishing skill looks weakly related to scoring — until you stop analysing
+      Finishing skill looks weakly related to scoring, until you stop analysing
       goalkeepers, defenders and strikers as one undifferentiated pool. Segmenting by
       position and controlling for playing time roughly doubles the measured effect.
       The lesson is about aggregation, not about football.
@@ -322,7 +315,7 @@
     </div>
     <p class="hero-note">
       Pooled across all 68,697 player-seasons the same relationship measures
-      <span class="strike">0.303</span> — the naive estimate understates it by
+      <span class="strike">0.303</span>. The naive estimate understates it by
       <b>more than half</b>.
     </p>
   </section>
@@ -356,7 +349,7 @@
       <div>
         <h2>Four steps from 0.303 to 0.618</h2>
         <p class="sub">Each row narrows the population by one decision. Nothing is
-          re-modelled — the same two columns are correlated throughout.</p>
+          re-modelled: the same two columns are correlated throughout.</p>
       </div>
       <button class="toggle" data-table="t-ladder" aria-pressed="false">Table</button>
     </div>
@@ -364,7 +357,7 @@
     <div class="tablewrap" id="t-ladder" hidden></div>
     <p class="footnote">Correlation is descriptive. Finishing ratings are assigned by
       observers who watched these players score, so this measures agreement between a
-      scout's judgement and an outcome — not a causal effect.</p>
+      scout's judgement and an outcome, not a causal effect.</p>
   </section>
 
   <!-- ============ 2. CURVES ============ -->
@@ -382,8 +375,8 @@
     <div class="legend" id="l-curves"></div>
     <div class="tablewrap" id="t-curves" hidden></div>
     <p class="footnote">Players with at least 10 starts; buckets with fewer than 30
-      player-seasons are dropped. Goalkeepers sit flat on zero across their whole range —
-      they are 9% of the data and contribute nothing but noise to a pooled estimate.</p>
+      player-seasons are dropped. Goalkeepers sit flat on zero across their whole range.
+      They are 9% of the data and contribute nothing but noise to a pooled estimate.</p>
   </section>
 
   <!-- ============ 3. GRID ============ -->
@@ -400,7 +393,7 @@
     <div class="plot" id="p-grid"></div>
     <div class="tablewrap" id="t-grid" hidden></div>
     <p class="footnote">Tackling and marking track goals for defenders and work against
-      them for midfielders — defenders who win the ball are simply the better players on
+      them for midfielders. Defenders who win the ball are simply the better players on
       the pitch, and the ones who score set-pieces.</p>
   </section>
 
@@ -410,7 +403,7 @@
       <div>
         <h2>Possession is a weak predictor</h2>
         <p class="sub">Bucket averages rise cleanly with the share of the ball. The
-          match-level correlation is only 0.26 — the tidy staircase is an artefact of
+          match-level correlation is only 0.26. The tidy staircase is an artefact of
           averaging thousands of noisy matches.</p>
       </div>
       <button class="toggle" data-table="t-poss" aria-pressed="false">Table</button>
@@ -418,7 +411,7 @@
     <div class="plot" id="p-poss"></div>
     <div class="tablewrap" id="t-poss" hidden></div>
     <p class="footnote">This chart is its own warning. Binned means almost always look
-      more decisive than the underlying relationship — the same flattery that makes the
+      more decisive than the underlying relationship: the same flattery that makes the
       pooled 0.303 look like a finding.</p>
   </section>
 
@@ -429,7 +422,7 @@
     are excluded from their tally, and <span class="codes">npm</span> / <span class="codes">dg</span>
     (missed penalties, disallowed goals) are not goals at all. Keeping
     <span class="codes">n + p + o</span> reproduces the recorded scoreline on 99.9% of matches
-    against 91.6% for a naive parse — that reconciliation is what identified the excluded types.
+    against 91.6% for a naive parse. That reconciliation is what identified the excluded types.
     Appearances are starting-XI only; this schema has no substitute records.</p>
   </footer>
 </div>
@@ -625,7 +618,7 @@
     }
     svg.appendChild(el("line", { x1: L, y1: T + ph, x2: L + pw, y2: T + ph, stroke: "var(--axis)", "stroke-width": 1 }));
     svg.appendChild(txt("text", { x: L, y: T + ph + 42, class: "ax-title" }, "Finishing rating"));
-    /* anchored at the plot's left edge — an end-anchored title overflows the viewBox */
+    /* anchored at the plot's left edge: an end-anchored title overflows the viewBox */
     svg.appendChild(txt("text", { x: L, y: T - 13, class: "ax-title" }, "Goals / start"));
 
     var layer = el("g", {});
@@ -681,7 +674,7 @@
       buckets.map(function (bx) {
         return [String(bx)].concat(DATA.positions.map(function (pos) {
           var p = DATA.curves[pos].find(function (q) { return q[0] === bx; });
-          return p ? p[1].toFixed(3) : "—";
+          return p ? p[1].toFixed(3) : "n/a";
         }));
       }));
   }

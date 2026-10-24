@@ -19,7 +19,7 @@ async function walk(dir) {
 const failures = [];
 
 // 1. Scan every built stylesheet. astro.config sets inlineStylesheets:'never',
-//    so all CSS lands in .css files — nothing hides in <style> tags.
+//    so all CSS lands in .css files, and nothing hides in <style> tags.
 let files;
 try {
   files = (await walk(DIST)).filter((f) => extname(f) === '.css');

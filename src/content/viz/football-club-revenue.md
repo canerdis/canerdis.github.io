@@ -30,7 +30,7 @@ galleryAlt:
 European football dominates global revenue, but the more interesting split is the
 one inside Europe.
 
-Of the **top 30 clubs by revenue, 15 are Premier League sides** — half the list from
+Of the **top 30 clubs by revenue, 15 are Premier League sides**: half the list from
 a single league. Only Liverpool breaks into the top five, which is the detail that
 makes the pattern clear: English dominance here is not about a few giants at the
 summit, it is about depth. The league fills the table from top to bottom.
